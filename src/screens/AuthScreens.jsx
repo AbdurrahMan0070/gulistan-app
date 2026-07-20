@@ -102,7 +102,7 @@ function PasswordInp({ label, urdu, placeholder, value, onChange, err, onKeyDown
   const [show, setShow] = useState(false);
   return (
     <div className="field">
-      {label && <label className="field-label">{label}{urdu && <span style={{ display:'block', textTransform:'none', fontWeight:500, fontStyle:'italic', letterSpacing:0.1, color:'var(--n400)', fontSize:10.5, marginTop:2 }}>{urdu}</span>}</label>}
+      {label && <label className="field-label">{label}{urdu && <span className="urdu-sub" style={{ display:'block', textTransform:'none', fontWeight:500, fontStyle:'italic', letterSpacing:0.1, color:'var(--n400)', fontSize:10.5, marginTop:2 }}>{urdu}</span>}</label>}
       <div style={{ position:'relative' }}>
         <input className={`field-input${err?' has-error':''}`} type={show?'text':'password'}
           placeholder={placeholder} value={value} onChange={onChange} onKeyDown={onKeyDown}
