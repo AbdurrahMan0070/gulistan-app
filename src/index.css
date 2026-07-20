@@ -22,9 +22,9 @@
   letter-spacing: 0;
 }
 
-/* Urdu subtitle under English labels */
+/* Urdu subtitle under English labels - FORCE Jameel Khushkhati everywhere */
 .urdu-sub {
-  font-family: 'JameelKhushkhati', 'Scheherazade New', serif;
+  font-family: 'JameelKhushkhati', 'Scheherazade New', serif !important;
   font-size: 12px;
   color: var(--n400);
   direction: rtl;
@@ -37,9 +37,9 @@
   unicode-bidi: embed;
 }
 
-/* Bismillah display on splash / welcome */
+/* Bismillah display on splash / welcome - FORCE Jameel Khushkhati */
 .bismillah {
-  font-family: 'JameelKhushkhati', 'Scheherazade New', serif;
+  font-family: 'JameelKhushkhati', 'Scheherazade New', serif !important;
   direction: rtl;
   text-align: center;
   line-height: 2;
@@ -48,13 +48,14 @@
   word-spacing: 2px;
 }
 
-/* urdu-sub inside field-label — always centered below */
+/* urdu-sub inside field-label — always centered below, FORCE Jameel Khushkhati */
 .field-label {
   display: flex !important;
   flex-direction: column !important;
   align-items: center !important;
 }
 .field-label .urdu-sub {
+  font-family: 'JameelKhushkhati', 'Scheherazade New', serif !important;
   font-size: 12px;
   margin-top: 3px;
   color: var(--n400);
@@ -307,6 +308,7 @@ body {
   width: 100%;
 }
 .field-label .urdu-sub {
+  font-family: 'JameelKhushkhati', 'Scheherazade New', serif !important;
   text-transform: none;
   font-size: 12px;
   font-weight: 500;
