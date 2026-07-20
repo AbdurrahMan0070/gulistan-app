@@ -261,7 +261,7 @@ export function RegisterScreen({ initialRole='student', onBack, onSuccess }) {
 
             <Inp label="Date of Birth" urdu={T.dateOfBirth} type="date" value={form.dob} onChange={f('dob')}/>
 
-            <Inp label="Phone Number" urdu="Apna Phone Number" type="tel" placeholder="+44 7700 000000"
+            <Inp label="Phone Number" urdu={T.phoneNumber} type="tel" placeholder="+44 7700 000000"
               value={form.phone} onChange={f('phone')}/>
 
             <div className="field">
