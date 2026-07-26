@@ -25,7 +25,7 @@
 /* Urdu subtitle under English labels - FORCE Jameel Khushkhati everywhere */
 .urdu-sub {
   font-family: 'JameelKhushkhati', 'Scheherazade New', serif !important;
-  font-size: 12px;
+  font-size: 13.5px;
   color: var(--n400);
   direction: rtl !important;
   display: block !important;
@@ -56,7 +56,7 @@
 }
 .field-label .urdu-sub {
   font-family: 'JameelKhushkhati', 'Scheherazade New', serif !important;
-  font-size: 12px;
+  font-size: 13.5px;
   margin-top: 3px;
   color: var(--n400);
   text-align: center !important;
@@ -269,7 +269,7 @@ body {
 }
 .stat-value { font-size: 26px; font-weight: 800; line-height: 1; letter-spacing: -1px; }
 .stat-label { font-size: 11.5px; color: var(--n500); font-weight: 500; }
-.stat-sub   { font-size: 10.5px; font-weight: 600; }
+.stat-sub   { font-size: 11.5px; font-weight: 600; font-family: 'JameelKhushkhati', 'Scheherazade New', serif !important; }
 
 /* ── Buttons ── */
 .btn {
@@ -315,7 +315,7 @@ body {
 .field-label .urdu-sub {
   font-family: 'JameelKhushkhati', 'Scheherazade New', serif !important;
   text-transform: none;
-  font-size: 12px;
+  font-size: 13.5px;
   font-weight: 500;
   letter-spacing: 0;
   color: var(--n400);

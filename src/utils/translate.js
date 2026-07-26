@@ -8,6 +8,7 @@ export const T = {
   signIn:           'اندر آئیں',
   email:            'ای میل لکھیں',
   password:         'پاس ورڈ لکھیں',
+  passwordHint:     '8 حروف سے زیادہ، 1 نمبر ضروری',
   fullName:         'پورا نام',
   confirmPassword:  'پاس ورڈ دوبارہ لکھیں',
   dateOfBirth:      'پیدائش کی تاریخ',

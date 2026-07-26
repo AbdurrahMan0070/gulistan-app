@@ -234,7 +234,7 @@ export function RegisterScreen({ initialRole='student', onBack, onSuccess }) {
           value={form.name} onChange={f('name')} err={errs.name}/>
         <Inp label="Email Address" urdu={T.email} type="email" placeholder="your@email.com"
           value={form.email} onChange={f('email')} err={errs.email}/>
-        <PasswordInp label="Password (8+ characters, 1 number)" urdu="8 letters se zyada, 1 number zaroori"
+        <PasswordInp label="Password (8+ characters, 1 number)" urdu={T.passwordHint}
           placeholder="e.g. Ahmed2025" value={form.password} onChange={f('password')} err={errs.password}/>
         <PasswordInp label="Confirm Password" urdu={T.confirmPassword}
           placeholder="Type it again" value={form.confirm} onChange={f('confirm')} err={errs.confirm}/>
