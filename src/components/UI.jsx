@@ -47,7 +47,7 @@ export function Header({ title, sub, urdu, showBack, onBack, rightEl }) {
             </div>
             <h2 style={{ color:'white', fontSize:18, fontWeight:700, margin:0, lineHeight:1.3, letterSpacing:-0.3 }}>{title}</h2>
             {sub && <p style={{ color:'rgba(255,255,255,0.55)', fontSize:12, margin:'3px 0 0', fontWeight:400 }}>{sub}</p>}
-            {urdu && <p className="urdu-sub" style={{ color:'rgba(255,255,255,0.6)', fontSize:13, margin:'4px 0 0', display:'block', textAlign:'center', width:'100%' }}>{urdu}</p>}
+            {urdu && <p className="urdu-sub" style={{ color:'rgba(255,255,255,0.6)', margin:'4px 0 0', display:'block', textAlign:'center', width:'100%' }}>{urdu}</p>}
           </div>
         </div>
         {rightEl}
@@ -86,7 +86,7 @@ export function Toast({ msg, type = 'success', onDone }) {
 export function Field({ label, urdu, err, children }) {
   return (
     <div className="field">
-      {label && <label className="field-label" style={{ display:'flex', flexDirection:'column', alignItems:'flex-start', gap:2 }}>{label}{urdu && <span className="urdu-sub" style={{ textTransform:'none', fontWeight:500, fontSize:12, display:'block', textAlign:'center', width:'100%' }}>{urdu}</span>}</label>}
+      {label && <label className="field-label" style={{ display:'flex', flexDirection:'column', alignItems:'flex-start', gap:2 }}>{label}{urdu && <span className="urdu-sub" style={{ textTransform:'none', fontWeight:500, display:'block', textAlign:'center', width:'100%' }}>{urdu}</span>}</label>}
       {children}
       {err && <span className="field-error">{err}</span>}
     </div>

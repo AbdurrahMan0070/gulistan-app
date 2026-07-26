@@ -102,7 +102,7 @@ function PasswordInp({ label, urdu, placeholder, value, onChange, err, onKeyDown
   const [show, setShow] = useState(false);
   return (
     <div className="field">
-      {label && <label className="field-label">{label}{urdu && <span className="urdu-sub" style={{ display:'block', textTransform:'none', fontWeight:500, fontStyle:'italic', letterSpacing:0.1, color:'var(--n400)', fontSize:10.5, marginTop:2 }}>{urdu}</span>}</label>}
+      {label && <label className="field-label">{label}{urdu && <span className="urdu-sub" style={{ display:'block', textTransform:'none', fontWeight:500, fontStyle:'italic', letterSpacing:0.1, color:'var(--n400)', marginTop:2 }}>{urdu}</span>}</label>}
       <div style={{ position:'relative' }}>
         <input className={`field-input${err?' has-error':''}`} type={show?'text':'password'}
           placeholder={placeholder} value={value} onChange={onChange} onKeyDown={onKeyDown}
@@ -224,7 +224,7 @@ export function RegisterScreen({ initialRole='student', onBack, onSuccess }) {
             <AlertTriangle size={16} color="#D97706" strokeWidth={2} style={{ flexShrink:0, marginTop:1 }}/>
             <div>
               <p style={{ fontSize:12.5, color:'#92400E', margin:0, lineHeight:1.5, fontWeight:600 }}>The lead Maulana must approve you first</p>
-              <p className="urdu-sub" style={{ fontSize:12.5, color:'#92400E', margin:'2px 0 0', textAlign:'center', display:'block' }}>{T.pendingApproval}</p>
+              <p className="urdu-sub" style={{ color:'#92400E', margin:'2px 0 0', textAlign:'center', display:'block' }}>{T.pendingApproval}</p>
             </div>
           </div>
         )}
@@ -286,7 +286,7 @@ export function RegisterScreen({ initialRole='student', onBack, onSuccess }) {
         <Btn variant="primary" onClick={submit}>
           {role==='teacher' ? (isFirst?'Create Account':'Send for Approval') : 'Finish Registration'}
         </Btn>
-        <p className="urdu-sub" style={{ textAlign:'center', margin:'8px 0 0', fontSize:13, display:'block' }}>
+        <p className="urdu-sub" style={{ textAlign:'center', margin:'8px 0 0', display:'block' }}>
           {role==='teacher' ? (isFirst ? T.completeAdmission : T.submitForApproval) : T.completeAdmission}
         </p>
       </div>
