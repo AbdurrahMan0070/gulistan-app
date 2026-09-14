@@ -288,7 +288,7 @@ _Official receipt from Noorul-Uloom Trust · Gulistan_`
         }}>
           <div>
             <h3 style={{ fontSize: 16, fontWeight: 700, color: 'var(--n900)', margin: 0 }}>Fee Receipt</h3>
-            <span className="urdu" style={{ fontSize: 14, color: 'var(--n500)', lineHeight: 1.5, display: 'block', textAlign: 'left' }}>
+            <span className="urdu" style={{ fontSize: 15, color: 'var(--n500)', lineHeight: 1.6, display: 'block', textAlign: 'left' }}>
               فیس رسید
             </span>
           </div>
@@ -308,13 +308,13 @@ _Official receipt from Noorul-Uloom Trust · Gulistan_`
           }}>
             {/* Header */}
             <div style={{ textAlign: 'center', borderBottom: '1.5px dashed var(--n200)', paddingBottom: '12px' }}>
-              <p className="bismillah" style={{ fontSize: 16, color: 'var(--g500)', margin: '0 0 2px', lineHeight: 1.6 }}>
+              <p className="bismillah" style={{ fontSize: 17, color: 'var(--g500)', margin: '0 0 2px', lineHeight: 1.6 }}>
                 بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
               </p>
               <h4 style={{ fontSize: 15, fontWeight: 800, color: 'var(--g500)', margin: '2px 0 0', letterSpacing: 0.5, textTransform: 'uppercase' }}>
                 Noorul-Uloom Trust · Gulistan
               </h4>
-              <p className="urdu" style={{ fontSize: 14, color: 'var(--n600)', margin: '2px 0 0', textAlign: 'center' }}>
+              <p className="urdu" style={{ fontSize: 16, color: 'var(--n600)', margin: '2px 0 0', textAlign: 'center', lineHeight: 1.6 }}>
                 نور العلوم ٹرسٹ گلستان
               </p>
               <div style={{
@@ -384,7 +384,7 @@ _Official receipt from Noorul-Uloom Trust · Gulistan_`
                   ₹{Number(record?.amount || amount).toLocaleString()}
                 </p>
               </div>
-              <span className="urdu" style={{ fontSize: 15, color: 'rgba(255,255,255,0.92)', textAlign: 'right' }}>
+              <span className="urdu" style={{ fontSize: 16.5, color: 'rgba(255,255,255,0.95)', textAlign: 'right', lineHeight: 1.6 }}>
                 مکمل ادائیگی
               </span>
             </div>
@@ -399,7 +399,7 @@ _Official receipt from Noorul-Uloom Trust · Gulistan_`
               </div>
               <div style={{ textAlign: 'right' }}>
                 <p style={{ fontSize: 11, fontWeight: 700, color: 'var(--n700)', margin: 0 }}>Authorized Signatory</p>
-                <p className="urdu" style={{ fontSize: 13, color: 'var(--n400)', margin: '1px 0 0', textAlign: 'right' }}>مولانا / دفتر</p>
+                <p className="urdu" style={{ fontSize: 14.5, color: 'var(--n500)', margin: '1px 0 0', textAlign: 'right', lineHeight: 1.6 }}>مولانا / دفتر</p>
               </div>
             </div>
           </div>
@@ -421,7 +421,7 @@ _Official receipt from Noorul-Uloom Trust · Gulistan_`
           >
             <Share2 size={18} strokeWidth={2.2}/>
             <span>Send on WhatsApp</span>
-            <span className="urdu" style={{ fontSize: 14, color: 'rgba(255,255,255,0.95)', marginRight: -3 }}>
+            <span className="urdu" style={{ fontSize: 15, color: 'rgba(255,255,255,0.95)', marginRight: -3, lineHeight: 1.5 }}>
               واٹس ایپ پر بھیجیں
             </span>
           </button>

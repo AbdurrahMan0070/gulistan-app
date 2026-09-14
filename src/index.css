@@ -29,6 +29,7 @@
 /* Urdu text class — applied wherever real Urdu script appears */
 .urdu, [lang="ur"] {
   font-family: 'JameelKhushkhati', 'Jameel Khushkhati', 'Noto Nastaliq Urdu', 'Scheherazade New', serif !important;
+  font-size: 15px;
   direction: rtl;
   text-align: right;
   line-height: 1.65;
@@ -41,7 +42,7 @@
 /* Urdu subtitle under or beside English labels */
 .urdu-sub {
   font-family: 'JameelKhushkhati', 'Jameel Khushkhati', 'Noto Nastaliq Urdu', 'Scheherazade New', serif !important;
-  font-size: 14px;
+  font-size: 15px;
   color: var(--n500);
   direction: rtl;
   text-align: right;
@@ -611,7 +612,7 @@ body {
 .field-label .urdu {
   font-family: 'JameelKhushkhati', 'Jameel Khushkhati', 'Noto Nastaliq Urdu', 'Scheherazade New', serif !important;
   text-transform: none;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 600;
   letter-spacing: 0;
   color: var(--n500);

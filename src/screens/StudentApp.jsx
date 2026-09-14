@@ -77,7 +77,7 @@ function SHome({ user, stats, goQR, goFees }) {
                 <span style={{ color:'white', fontSize:14.5, fontWeight:700 }}>
                   {feeStatus==='pending' ? 'Fee is being checked' : `Fee Due — ₹${settings.monthlyAmount || 500}`}
                 </span>
-                <span className="urdu" style={{ color:'rgba(255,255,255,0.92)', fontSize:14.5, textAlign:'right', lineHeight:1.6 }}>
+                <span className="urdu" style={{ color:'rgba(255,255,255,0.92)', fontSize:15, textAlign:'right', lineHeight:1.6 }}>
                   {feeStatus==='pending' ? T.awaitingVerify : "فیس باقی ہے"}
                 </span>
               </div>
@@ -99,7 +99,7 @@ function SHome({ user, stats, goQR, goFees }) {
           <div style={{ flex:1, minWidth:0, paddingRight:12 }}>
             <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', gap:8, flexWrap:'wrap' }}>
               <span style={{ color:'white', fontSize:16, fontWeight:700, letterSpacing:-0.2 }}>Show My QR Code</span>
-              <span className="urdu" style={{ color:'rgba(255,255,255,0.9)', fontSize:15, textAlign:'right', lineHeight:1.6 }}>QR کوڈ دکھائیں</span>
+              <span className="urdu" style={{ color:'rgba(255,255,255,0.9)', fontSize:15.5, textAlign:'right', lineHeight:1.6 }}>QR کوڈ دکھائیں</span>
             </div>
           </div>
           <div style={{ background:'rgba(255,255,255,0.14)', borderRadius:12, padding:12, flexShrink:0 }}>
@@ -111,7 +111,7 @@ function SHome({ user, stats, goQR, goFees }) {
         <Card>
           <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:12 }}>
             <p style={{ fontSize:13.5, fontWeight:700, color:'var(--n700)', margin:0 }}>Recent Attendance</p>
-            <span className="urdu" style={{ textAlign:'right', fontSize:13.5, lineHeight:1.6, color:'var(--n500)' }}>پچھلی حاضری</span>
+            <span className="urdu" style={{ textAlign:'right', fontSize:15, lineHeight:1.6, color:'var(--n500)' }}>پچھلی حاضری</span>
           </div>
           {history.length===0
             ? <p style={{ color:'var(--n400)', fontSize:13, padding:'16px 0', textAlign:'center' }}>No records yet</p>
@@ -221,7 +221,7 @@ function SQR({ user }) {
             <Printer size={16} strokeWidth={2}/>Print
           </button>
         </div>
-        <p className="urdu" style={{margin:"-4px 0 4px",textAlign:'right',display:'block',width:'100%',fontSize:14,lineHeight:1.85,color:'var(--n500)'}}>ڈاؤنلوڈ کریں · پرنٹ کریں</p>
+        <p className="urdu" style={{margin:"-4px 0 4px",textAlign:'right',display:'block',width:'100%',fontSize:15,lineHeight:1.85,color:'var(--n500)'}}>ڈاؤنلوڈ کریں · پرنٹ کریں</p>
 
         {/* Simple 3-step guide instead of long list */}
         <Card style={{ width:'100%' }}>
@@ -229,7 +229,7 @@ function SQR({ user }) {
             <Info size={16} color="var(--g500)" strokeWidth={2} style={{ flexShrink:0, marginTop:2 }}/>
             <div>
               <p style={{ fontSize:13, fontWeight:700, color:'var(--n900)', margin:0 }}>Phones aren't allowed in Madrasa?</p>
-              <p className="urdu" style={{ fontSize:14, color:'var(--n500)', margin:'4px 0 0', display:'block', textAlign:'right', lineHeight:1.85 }}>مدرسے میں فون نہیں لے جا سکتے؟</p>
+              <p className="urdu" style={{ fontSize:15, color:'var(--n500)', margin:'4px 0 0', display:'block', textAlign:'right', lineHeight:1.85 }}>مدرسے میں فون نہیں لے جا سکتے؟</p>
             </div>
           </div>
           <p style={{ fontSize:12.5, color:'var(--n600)', margin:'10px 0 0', lineHeight:1.7 }}>
@@ -275,7 +275,7 @@ function SFees({ user, refresh }) {
         <div>
           <label className="field-label" style={{ display:'block', marginBottom:6 }}>
             Select Month
-            <span className="urdu" style={{ display:'block', fontWeight:500, textTransform:'none', letterSpacing:0, fontSize:14, color:'var(--n500)', marginTop:3, textAlign:'right', lineHeight:1.6 }}>مہینہ چنیں</span>
+            <span className="urdu" style={{ display:'block', fontWeight:500, textTransform:'none', letterSpacing:0, fontSize:15, color:'var(--n500)', marginTop:3, textAlign:'right', lineHeight:1.6 }}>مہینہ چنیں</span>
           </label>
           <select value={month} onChange={e => setMonth(e.target.value)} className="field-select">
             {months.map(m => <option key={m} value={m}>{fmtMonth(m)}{m===currentMonthKey()?' (Current)':''}</option>)}
@@ -291,7 +291,7 @@ function SFees({ user, refresh }) {
             <p style={{ fontSize:12, color:ss.tc, margin:'0 0 4px', fontWeight:600 }}>{fmtMonth(month)}</p>
             <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', width:'100%' }}>
               <p style={{ fontSize:18, fontWeight:800, color:ss.tc, margin:0, letterSpacing:-0.3 }}>{ss.label}</p>
-              <span className="urdu" style={{ fontSize:16, color:ss.tc, margin:0, textAlign:'right', lineHeight:1.6 }}>{ss.ur}</span>
+              <span className="urdu" style={{ fontSize:17, color:ss.tc, margin:0, textAlign:'right', lineHeight:1.6 }}>{ss.ur}</span>
             </div>
             {feeState==='unpaid' && month===currentMonthKey() && (
               <p style={{ fontSize:22, fontWeight:800, color:ss.tc, margin:'6px 0 0', letterSpacing:-1 }}>₹{amount.toLocaleString()}</p>
@@ -315,7 +315,7 @@ function SFees({ user, refresh }) {
               <Receipt size={17} color="var(--g500)" strokeWidth={2.2}/>
               <span>View & Share Receipt</span>
             </div>
-            <span className="urdu" style={{ fontSize:14, color:'var(--g500)', lineHeight:1.6 }}>رسید دیکھیں اور بھیجیں</span>
+            <span className="urdu" style={{ fontSize:15, color:'var(--g500)', lineHeight:1.6 }}>رسید دیکھیں اور بھیجیں</span>
           </button>
         )}
 
@@ -336,7 +336,7 @@ function SFees({ user, refresh }) {
         <div>
           <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', margin:'0 0 10px' }}>
             <p style={{ fontSize:13.5, fontWeight:700, color:'var(--n700)', margin:0 }}>Payment History</p>
-            <span className="urdu" style={{ fontSize:13.5, color:'var(--n500)', textAlign:'right', lineHeight:1.6 }}>پہلے کا حساب</span>
+            <span className="urdu" style={{ fontSize:15, color:'var(--n500)', textAlign:'right', lineHeight:1.6 }}>پہلے کا حساب</span>
           </div>
           {history.length===0
             ? <Card><p style={{ color:'var(--n400)', fontSize:13, textAlign:'center', padding:'16px 0' }}>No payments yet</p></Card>
@@ -590,7 +590,7 @@ function PaymentModal({ user, monthKey, amount, settings, onClose, onPaid }) {
             <h3 style={{ fontSize:16.5, fontWeight:700, color:'var(--n900)', margin:0 }}>
               {step==='choose' ? 'Pay Fees' : 'Confirm Payment'}
             </h3>
-            <span className="urdu" style={{textAlign:'right',display:'block',width:'100%',fontSize:14,lineHeight:1.85,color:'rgba(255,255,255,0.7)',marginTop:2}}>{step==='choose' ? 'ابھی فیس ادا کریں' : 'بھیج دیں'}</span>
+            <span className="urdu" style={{textAlign:'right',display:'block',width:'100%',fontSize:15,lineHeight:1.8,color:'rgba(255,255,255,0.7)',marginTop:2}}>{step==='choose' ? 'ابھی فیس ادا کریں' : 'بھیج دیں'}</span>
           </div>
           <button onClick={onClose} style={{ background:'var(--n100)', border:'none', borderRadius:'50%', width:34, height:34, cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center' }}>
             <XCircle size={16} color="var(--n600)" strokeWidth={2}/>
@@ -606,13 +606,13 @@ function PaymentModal({ user, monthKey, amount, settings, onClose, onPaid }) {
                 <span style={{ color:'rgba(255,255,255,0.75)', fontSize:12, fontWeight:600 }}>Total Due</span>
                 <p style={{ color:'white', fontSize:28, fontWeight:800, margin:'2px 0 0', letterSpacing:-0.5 }}>₹{amount.toLocaleString()}</p>
               </div>
-              <span className="urdu" style={{ color:'rgba(255,255,255,0.92)', fontSize:16, textAlign:'right', lineHeight:1.3 }}>فیس باقی ہے</span>
+              <span className="urdu" style={{ color:'rgba(255,255,255,0.92)', fontSize:17, textAlign:'right', lineHeight:1.5 }}>فیس باقی ہے</span>
             </div>
 
             <div>
               <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:10 }}>
                 <p style={{ fontSize:12.5, fontWeight:700, color:'var(--n600)', margin:0 }}>Choose UPI App</p>
-                <span className="urdu" style={{ textAlign:'right', fontSize:13.5, lineHeight:1.3, color:'var(--n500)' }}>ایپ چنیں</span>
+                <span className="urdu" style={{ textAlign:'right', fontSize:15, lineHeight:1.6, color:'var(--n500)' }}>ایپ چنیں</span>
               </div>
               <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:10 }}>
                 {UPI_APPS.map(app => (
@@ -640,7 +640,7 @@ function PaymentModal({ user, monthKey, amount, settings, onClose, onPaid }) {
             <div style={{ background:'var(--n50)', borderRadius:'var(--r)', padding:'14px 16px' }}>
               <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:8 }}>
                 <p style={{ fontSize:11.5, color:'var(--n500)', margin:0, fontWeight:600 }}>Or pay directly to UPI ID</p>
-                <span className="urdu" style={{ textAlign:'right', fontSize:13, lineHeight:1.3, color:'var(--n500)' }}>یا سیدھا UPI ID پر بھیجیں</span>
+                <span className="urdu" style={{ textAlign:'right', fontSize:15, lineHeight:1.6, color:'var(--n500)' }}>یا سیدھا UPI ID پر بھیجیں</span>
               </div>
               <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', background:'white', border:'1.5px solid var(--n200)', borderRadius:'var(--r-sm)', padding:'11px 14px' }}>
                 <span style={{ fontFamily:'monospace', fontSize:14.5, fontWeight:700, color:'var(--g400)' }}>{upiId}</span>
@@ -673,7 +673,7 @@ function PaymentModal({ user, monthKey, amount, settings, onClose, onPaid }) {
                 {usedApp ? usedApp.utrHelp : "Open your UPI app → payment history → find this payment → copy the UTR / Reference ID"}
               </p>
               {usedApp?.utrHelpUr && (
-                <span className="urdu" style={{ display:'block', marginTop:8, textAlign:'right', fontSize:13, lineHeight:1.85, color:'var(--n500)' }}>{usedApp.utrHelpUr}</span>
+                <span className="urdu" style={{ display:'block', marginTop:8, textAlign:'right', fontSize:14.5, lineHeight:1.8, color:'var(--n500)' }}>{usedApp.utrHelpUr}</span>
               )}
             </div>
 
@@ -681,7 +681,7 @@ function PaymentModal({ user, monthKey, amount, settings, onClose, onPaid }) {
             <div className="field">
               <label className="field-label">
                 <span>Payment Code (UTR / Reference ID)</span>
-                <span className="urdu" style={{ textTransform:'none', fontWeight:500, fontSize:13, textAlign:'right', display:'block', width:'100%', lineHeight:1.85 }}>ادائیگی کا کوڈ</span>
+                <span className="urdu" style={{ textTransform:'none', fontWeight:500, fontSize:15, textAlign:'right', display:'block', width:'100%', lineHeight:1.6 }}>ادائیگی کا کوڈ</span>
               </label>
               <input
                 className={`field-input${err && !txnId.trim() ? ' has-error' : ''}`}
@@ -697,7 +697,7 @@ function PaymentModal({ user, monthKey, amount, settings, onClose, onPaid }) {
             <div className="field">
               <label className="field-label">
                 <span>Payment Screenshot</span>
-                <span className="urdu" style={{ textTransform:'none', fontWeight:500, fontSize:13, textAlign:'right', display:'block', width:'100%', lineHeight:1.85 }}>ادائیگی کی تصویر لگائیں</span>
+                <span className="urdu" style={{ textTransform:'none', fontWeight:500, fontSize:15, textAlign:'right', display:'block', width:'100%', lineHeight:1.6 }}>ادائیگی کی تصویر لگائیں</span>
               </label>
 
               {screenshot ? (
@@ -730,7 +730,7 @@ function PaymentModal({ user, monthKey, amount, settings, onClose, onPaid }) {
                     <p style={{ fontSize:14, fontWeight:700, color:'var(--n700)', margin:0 }}>
                       {uploading ? 'Processing…' : 'Tap to upload screenshot'}
                     </p>
-                    <span className="urdu" style={{ display:'block', marginTop:4, textAlign:'right', width:'100%', fontSize:14, lineHeight:1.85, color:'var(--n500)' }}>ادائیگی کی تصویر لگائیں</span>
+                    <span className="urdu" style={{ display:'block', marginTop:4, textAlign:'right', width:'100%', fontSize:15, lineHeight:1.8, color:'var(--n500)' }}>ادائیگی کی تصویر لگائیں</span>
                     <p style={{ fontSize:11, color:'var(--n400)', margin:'5px 0 0' }}>JPG, PNG — any payment screenshot</p>
                   </div>
                 </button>
@@ -744,7 +744,7 @@ function PaymentModal({ user, monthKey, amount, settings, onClose, onPaid }) {
               style={{ width:'100%', padding:'14px', borderRadius:'var(--r-sm)', border:'none', background:'var(--g400)', color:'white', fontWeight:700, fontSize:14.5, cursor:'pointer', fontFamily:'inherit', boxShadow:'var(--shadow-green)' }}>
               Submit for Verification
             </button>
-            <span className="urdu" style={{ textAlign:'right', display:'block', width:'100%', marginTop:-4, marginBottom:4, fontSize:14, lineHeight:1.85, color:'var(--n500)' }}>بھیج دیں</span>
+            <span className="urdu" style={{ textAlign:'right', display:'block', width:'100%', marginTop:-4, marginBottom:4, fontSize:15, lineHeight:1.8, color:'var(--n500)' }}>بھیج دیں</span>
 
             <button onClick={() => { setStep('choose'); setErr(''); }}
               style={{ width:'100%', padding:'13px', borderRadius:'var(--r-sm)', border:'1.5px solid var(--n200)', background:'transparent', color:'var(--n600)', fontWeight:600, fontSize:13.5, cursor:'pointer', fontFamily:'inherit' }}>

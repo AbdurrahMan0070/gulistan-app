@@ -93,8 +93,8 @@ function BigChoiceBtn({ en, ur, icon: Icon, onClick, variant='primary' }) {
       <div style={{ flex:1, display:'flex', alignItems:'center', justifyContent:'space-between', gap:8, flexWrap:'wrap' }}>
         <div style={{ fontSize:16, fontWeight:700, color:s.color, letterSpacing:-0.2, textAlign:'left' }}>{en}</div>
         <span className="urdu" style={{
-          color: variant==='primary' ? 'rgba(255,255,255,0.9)' : 'var(--n500)',
-          fontSize:15, textAlign:'right', lineHeight:1.3,
+          color: variant==='primary' ? 'rgba(255,255,255,0.92)' : 'var(--n500)',
+          fontSize:15.5, textAlign:'right', lineHeight:1.55,
         }}>{ur}</span>
       </div>
     </button>
@@ -108,7 +108,7 @@ function PasswordInp({ label, urdu, placeholder, value, onChange, err, onKeyDown
       {label && (
         <label className="field-label">
           <span>{label}</span>
-          {urdu && <span className="urdu-sub" style={{ textTransform:'none', fontWeight:500, fontSize:14, lineHeight:1.6 }}>{urdu}</span>}
+          {urdu && <span className="urdu-sub" style={{ textTransform:'none', fontWeight:500, fontSize:15, lineHeight:1.6 }}>{urdu}</span>}
         </label>
       )}
       <div style={{ position:'relative' }}>
@@ -232,7 +232,7 @@ export function RegisterScreen({ initialRole='student', onBack, onSuccess }) {
             <AlertTriangle size={16} color="#D97706" strokeWidth={2} style={{ flexShrink:0, marginTop:1 }}/>
             <div>
               <p style={{ fontSize:12.5, color:'#92400E', margin:0, lineHeight:1.5, fontWeight:600 }}>The lead Maulana must approve you first</p>
-              <p className="urdu" style={{ fontSize:13, color:'#92400E', margin:'4px 0 0', textAlign:'right', display:'block', lineHeight:1.85 }}>{T.pendingApproval}</p>
+              <p className="urdu" style={{ fontSize:14.5, color:'#92400E', margin:'4px 0 0', textAlign:'right', display:'block', lineHeight:1.85 }}>{T.pendingApproval}</p>
             </div>
           </div>
         )}
@@ -297,7 +297,7 @@ export function RegisterScreen({ initialRole='student', onBack, onSuccess }) {
         <Btn variant="primary" onClick={submit}>
           {role==='teacher' ? (isFirst?'Create Account':'Send for Approval') : 'Finish Registration'}
         </Btn>
-        <p className="urdu" style={{ textAlign:'right', margin:'8px 0 0', fontSize:14, display:'block', lineHeight:1.85 }}>
+        <p className="urdu" style={{ textAlign:'right', margin:'8px 0 0', fontSize:15, display:'block', lineHeight:1.85 }}>
           {role==='teacher' ? (isFirst ? T.completeAdmission : T.submitForApproval) : T.completeAdmission}
         </p>
       </div>

@@ -51,7 +51,7 @@ export function Header({ title, sub, urdu, showBack, onBack, rightEl }) {
         </div>
         <div style={{ display:'flex', alignItems:'center', gap:10, flexShrink:0 }}>
           {urdu && (
-            <span className="urdu" style={{ color:'rgba(255,255,255,0.92)', fontSize:16, lineHeight:1.6, textAlign:'right' }}>
+            <span className="urdu" style={{ color:'rgba(255,255,255,0.92)', fontSize:17, lineHeight:1.6, textAlign:'right' }}>
               {urdu}
             </span>
           )}
@@ -95,7 +95,7 @@ export function Field({ label, urdu, err, children }) {
       {label && (
         <label className="field-label">
           <span style={{ fontSize:'inherit', fontWeight:'inherit', color:'inherit' }}>{label}</span>
-          {urdu && <span className="urdu-sub" style={{ textTransform:'none', fontWeight:500, fontSize:14 }}>{urdu}</span>}
+          {urdu && <span className="urdu-sub" style={{ textTransform:'none', fontWeight:500, fontSize:15, lineHeight:1.6 }}>{urdu}</span>}
         </label>
       )}
       {children}
@@ -225,7 +225,7 @@ export function SearchBar({ value, onChange, placeholder }) {
 // ── Urdu subtitle — real Urdu script, Jameel Khushkhati font ────────────────
 export function Sub({ children }) {
   if (!children) return null;
-  return <span className="urdu" style={{ display:'block', width:'100%', textAlign:'right', fontSize:14.5, lineHeight:1.65, color:'var(--n500)', marginTop:3 }}>{children}</span>;
+  return <span className="urdu" style={{ display:'block', width:'100%', textAlign:'right', fontSize:15.5, lineHeight:1.65, color:'var(--n500)', marginTop:3 }}>{children}</span>;
 }
 
 // ── Label with English + Urdu stacked ────────────────────────────────────────
@@ -233,7 +233,7 @@ export function Label2({ en, ur, size = 15, weight = 700, color = 'var(--n900)' 
   return (
     <div style={{ display:'flex', alignItems:'baseline', justifyContent:'space-between', width:'100%', marginBottom:4 }}>
       <span style={{ fontSize: size, fontWeight: weight, color, letterSpacing: -0.2 }}>{en}</span>
-      {ur && <span className="urdu" style={{ fontSize: 14, lineHeight: 1.6, color: 'var(--n500)', textAlign: 'right' }}>{ur}</span>}
+      {ur && <span className="urdu" style={{ fontSize: 15, lineHeight: 1.6, color: 'var(--n500)', textAlign: 'right' }}>{ur}</span>}
     </div>
   );
 }
@@ -260,7 +260,7 @@ export function BigBtn({ en, ur, icon: Icon, onClick, variant = 'primary', style
         {ur && (
           <span className="urdu" style={{
             color: variant === 'ghost' ? 'var(--n500)' : 'rgba(255,255,255,0.92)',
-            fontSize: 14.5, textAlign: 'right', lineHeight: 1.55,
+            fontSize: 15.5, textAlign: 'right', lineHeight: 1.55,
           }}>{ur}</span>
         )}
       </div>

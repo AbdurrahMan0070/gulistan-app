@@ -121,7 +121,7 @@ function THome({ user, scanBtn, selDate, onScan, onFinalize }) {
             <AlertTriangle size={18} color="var(--warning)" strokeWidth={2} style={{ flexShrink:0 }}/>
             <div>
               <p style={{ margin:0, fontSize:13, color:'#92400E', fontWeight:600 }}>{unmarked} student{unmarked>1?'s':''} not marked yet</p>
-              <span className="urdu" style={{ color:'#B45309', display:'block', textAlign:'right', width:'100%', fontSize:13, lineHeight:1.85, marginTop:4 }}>ابھی تک مارک نہیں ہوئے</span>
+              <span className="urdu" style={{ color:'#B45309', display:'block', textAlign:'right', width:'100%', fontSize:14.5, lineHeight:1.8, marginTop:4 }}>ابھی تک مارک نہیں ہوئے</span>
             </div>
           </div>
         )}
@@ -135,7 +135,7 @@ function THome({ user, scanBtn, selDate, onScan, onFinalize }) {
           <Card style={{ background:'#FFFBEB', border:'1px solid #FDE68A' }}>
             <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', width:'100%' }}>
               <p style={{ fontSize:13, fontWeight:700, color:'#92400E', margin:0 }}>{feeStats.unpaid} students haven't paid fees</p>
-              <span className="urdu" style={{ color:'#B45309', fontSize:14, lineHeight:1.6, textAlign:'right' }}>فیس نہیں دی</span>
+              <span className="urdu" style={{ color:'#B45309', fontSize:15, lineHeight:1.6, textAlign:'right' }}>فیس نہیں دی</span>
             </div>
           </Card>
         )}
@@ -143,7 +143,7 @@ function THome({ user, scanBtn, selDate, onScan, onFinalize }) {
         <Card>
           <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:12 }}>
             <p style={{ fontSize:13.5, fontWeight:700, color:'var(--n700)', margin:0 }}>Today's Register</p>
-            <span className="urdu" style={{ textAlign:'right', fontSize:14, lineHeight:1.6, color:'var(--n500)' }}>آج کا رجسٹر</span>
+            <span className="urdu" style={{ textAlign:'right', fontSize:15, lineHeight:1.6, color:'var(--n500)' }}>آج کا رجسٹر</span>
           </div>
           {students.length===0
             ? <p style={{ color:'var(--n400)', fontSize:13, textAlign:'center', padding:'14px 0' }}>No students registered yet</p>
@@ -336,7 +336,7 @@ function TFees({ toast_, refresh: parentRefresh }) {
           <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:10 }}>
             <div style={{ display:'flex', alignItems:'center', gap:10 }}>
               <span style={{ fontSize:13, fontWeight:700, color:'var(--n700)' }}>Collection Progress</span>
-              <span className="urdu" style={{ fontSize:14, color:'var(--n500)', textAlign:'right', lineHeight:1.6 }}>کتنا پیسہ آیا</span>
+              <span className="urdu" style={{ fontSize:15, color:'var(--n500)', textAlign:'right', lineHeight:1.6 }}>کتنا پیسہ آیا</span>
             </div>
             <span style={{ fontSize:13, fontWeight:800, color:paidPct>=75?'var(--g400)':'var(--danger)' }}>{paidPct}%</span>
           </div>
@@ -347,7 +347,7 @@ function TFees({ toast_, refresh: parentRefresh }) {
         <div>
           <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:10 }}>
             <p style={{ fontSize:13.5, fontWeight:700, color:'var(--n700)', margin:0 }}>Each Student</p>
-            <span className="urdu" style={{ textAlign:'right', fontSize:14, lineHeight:1.6, color:'var(--n500)' }}>ہر طالب علم</span>
+            <span className="urdu" style={{ textAlign:'right', fontSize:15, lineHeight:1.6, color:'var(--n500)' }}>ہر طالب علم</span>
           </div>
           {students.length===0
             ? <Empty Icon={Receipt} title="No students registered" sub="Add students first"/>
