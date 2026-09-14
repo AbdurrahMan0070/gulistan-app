@@ -9,6 +9,7 @@ import {
 } from 'lucide-react';
 import { Header, Avatar, Toast, Card, StatCard, Pill, Empty, ProgressBar, SearchBar, BigBtn, Sub } from '../components/UI';
 import { QRScanner } from '../components/QRScanner';
+import { ReceiptModal } from '../components/ReceiptModal';
 import { T } from '../utils/translate';
 import {
   getStudents, getTeachers, getAttendance, markAttendance, finalizeDay,
@@ -120,7 +121,7 @@ function THome({ user, scanBtn, selDate, onScan, onFinalize }) {
             <AlertTriangle size={18} color="var(--warning)" strokeWidth={2} style={{ flexShrink:0 }}/>
             <div>
               <p style={{ margin:0, fontSize:13, color:'#92400E', fontWeight:600 }}>{unmarked} student{unmarked>1?'s':''} not marked yet</p>
-              <span className="urdu-sub" style={{ color:'#B45309', display:'block', marginTop:2 }}>ابھی تک مارک نہیں ہوئے</span>
+              <span className="urdu" style={{ color:'#B45309', display:'block', textAlign:'right', width:'100%', fontSize:13, lineHeight:1.85, marginTop:4 }}>ابھی تک مارک نہیں ہوئے</span>
             </div>
           </div>
         )}
@@ -132,19 +133,17 @@ function THome({ user, scanBtn, selDate, onScan, onFinalize }) {
         {/* Fee snapshot — single line, no detail */}
         {students.length>0 && feeStats.unpaid + feeStats.pending > 0 && (
           <Card style={{ background:'#FFFBEB', border:'1px solid #FDE68A' }}>
-            <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between' }}>
-              <div>
-                <p style={{ fontSize:13, fontWeight:700, color:'#92400E', margin:0 }}>{feeStats.unpaid} students haven't paid fees</p>
-                <span className="urdu-sub" style={{ color:'#B45309', display:'block', marginTop:2 }}>فیس نہیں دی</span>
-              </div>
+            <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', width:'100%' }}>
+              <p style={{ fontSize:13, fontWeight:700, color:'#92400E', margin:0 }}>{feeStats.unpaid} students haven't paid fees</p>
+              <span className="urdu" style={{ color:'#B45309', fontSize:14, lineHeight:1.6, textAlign:'right' }}>فیس نہیں دی</span>
             </div>
           </Card>
         )}
 
         <Card>
-          <div style={{ marginBottom:12 }}>
-            <p style={{ fontSize:13, fontWeight:700, color:'var(--n700)', margin:'0 0 2px' }}>Today's Register</p>
-            <span className="urdu-sub" style={{textAlign:"center",display:"block",width:"100%"}}>"آج کا رجسٹر"</span>
+          <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:12 }}>
+            <p style={{ fontSize:13.5, fontWeight:700, color:'var(--n700)', margin:0 }}>Today's Register</p>
+            <span className="urdu" style={{ textAlign:'right', fontSize:14, lineHeight:1.6, color:'var(--n500)' }}>آج کا رجسٹر</span>
           </div>
           {students.length===0
             ? <p style={{ color:'var(--n400)', fontSize:13, textAlign:'center', padding:'14px 0' }}>No students registered yet</p>
@@ -250,8 +249,9 @@ function TAttendance({ selDate, setSelDate, scanBtn, onScan, onFinalize, refresh
 
 // ── Fees Tab ───────────────────────────────────────────────────────────────────
 function TFees({ toast_, refresh: parentRefresh }) {
-  const [month,    setMonth]    = useState(currentMonthKey());
-  const [expanded, setExpanded] = useState(null);
+  const [month,       setMonth]       = useState(currentMonthKey());
+  const [expanded,    setExpanded]    = useState(null);
+  const [receiptData, setReceiptData] = useState(null);
   const [showSettings, setShowSettings] = useState(false);
   const [, tick] = useState(0);
   const re = () => { tick(n=>n+1); parentRefresh(); };
@@ -333,8 +333,11 @@ function TFees({ toast_, refresh: parentRefresh }) {
         </div>
 
         <Card>
-          <div style={{ display:'flex', justifyContent:'space-between', marginBottom:10 }}>
-            <span style={{ fontSize:13, fontWeight:600, color:'var(--n700)', textAlign:'center', display:'block' }}>کتنا پیسہ آیا</span>
+          <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:10 }}>
+            <div style={{ display:'flex', alignItems:'center', gap:10 }}>
+              <span style={{ fontSize:13, fontWeight:700, color:'var(--n700)' }}>Collection Progress</span>
+              <span className="urdu" style={{ fontSize:14, color:'var(--n500)', textAlign:'right', lineHeight:1.6 }}>کتنا پیسہ آیا</span>
+            </div>
             <span style={{ fontSize:13, fontWeight:800, color:paidPct>=75?'var(--g400)':'var(--danger)' }}>{paidPct}%</span>
           </div>
           <ProgressBar pct={paidPct}/>
@@ -342,7 +345,10 @@ function TFees({ toast_, refresh: parentRefresh }) {
         </Card>
 
         <div>
-          <div style={{marginBottom:10}}><p style={{fontSize:13,fontWeight:700,color:'var(--n700)',margin:'0 0 2px'}}>Each Student</p><span className="urdu-sub" style={{textAlign:"center",display:"block",width:"100%"}}>ہر طالب علم</span></div>
+          <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:10 }}>
+            <p style={{ fontSize:13.5, fontWeight:700, color:'var(--n700)', margin:0 }}>Each Student</p>
+            <span className="urdu" style={{ textAlign:'right', fontSize:14, lineHeight:1.6, color:'var(--n500)' }}>ہر طالب علم</span>
+          </div>
           {students.length===0
             ? <Empty Icon={Receipt} title="No students registered" sub="Add students first"/>
             : students.map(s => {
@@ -407,9 +413,17 @@ function TFees({ toast_, refresh: parentRefresh }) {
                           </>
                         )}
                         {status==='paid' && (
-                          <button onClick={()=>handleMarkUnpaid(s.id)} style={{ flex:1, padding:'12px', borderRadius:'var(--r-sm)', border:'1.5px solid var(--n200)', background:'transparent', color:'var(--n600)', fontWeight:600, fontSize:13, cursor:'pointer', fontFamily:'inherit' }}>
-                            Undo
-                          </button>
+                          <>
+                            <button
+                              onClick={()=>setReceiptData({ student: s, monthKey: month, record: rec, amount: rec?.amount || amount })}
+                              style={{ flex:1.5, padding:'12px 14px', borderRadius:'var(--r-sm)', border:'1.5px solid var(--g400)', background:'var(--g50)', color:'var(--g500)', fontWeight:700, fontSize:13, cursor:'pointer', fontFamily:'inherit', display:'flex', alignItems:'center', justifyContent:'center', gap:6 }}
+                            >
+                              <Receipt size={14} color="var(--g500)"/> Receipt / رسید
+                            </button>
+                            <button onClick={()=>handleMarkUnpaid(s.id)} style={{ flex:1, padding:'12px', borderRadius:'var(--r-sm)', border:'1.5px solid var(--n200)', background:'transparent', color:'var(--n600)', fontWeight:600, fontSize:13, cursor:'pointer', fontFamily:'inherit' }}>
+                              Undo
+                            </button>
+                          </>
                         )}
                       </div>
                     </div>
@@ -421,6 +435,15 @@ function TFees({ toast_, refresh: parentRefresh }) {
         </div>
       </div>
       {showSettings && <FeeSettingsSheet onClose={()=>{setShowSettings(false);re();}} toast_={toast_}/>}
+      {receiptData && (
+        <ReceiptModal
+          student={receiptData.student}
+          monthKey={receiptData.monthKey}
+          record={receiptData.record}
+          amount={receiptData.amount}
+          onClose={()=>setReceiptData(null)}
+        />
+      )}
     </>
   );
 }

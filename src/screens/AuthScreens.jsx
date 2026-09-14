@@ -18,10 +18,10 @@ export function SplashScreen({ onDone }) {
         <p className="bismillah" style={{ color:'white', fontSize:26, margin:'0 0 6px' }}>
           بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيمِ
         </p>
-        <p style={{ color:'rgba(255,255,255,0.58)', fontSize:12, margin:'0 0 3px', fontStyle:'italic', letterSpacing:0.3 }}>
+        <p style={{ color:'rgba(255,255,255,0.6)', fontSize:12, margin:'0 0 3px', fontStyle:'italic', letterSpacing:0.3 }}>
           Bismillah ir-Rahman ir-Raheem
         </p>
-        <p style={{ color:'rgba(255,255,255,0.38)', fontSize:10.5, margin:'0 0 26px' }}>
+        <p style={{ color:'rgba(255,255,255,0.42)', fontSize:11, margin:'0 0 26px' }}>
           In the name of Allah, the Most Gracious, the Most Merciful
         </p>
 
@@ -30,7 +30,7 @@ export function SplashScreen({ onDone }) {
         </div>
         <h1 style={{ color:'white', fontSize:26, fontWeight:800, margin:0, letterSpacing:-0.5, lineHeight:1.2 }}>Noorul-Uloom</h1>
         <p style={{ color:'rgba(255,255,255,0.82)', fontSize:16, margin:'4px 0 0', fontWeight:600, letterSpacing:1 }}>Gulistan</p>
-        <p style={{ color:'rgba(255,255,255,0.45)', fontSize:10.5, margin:'6px 0 0', letterSpacing:2, textTransform:'uppercase', fontWeight:500 }}>Attendance System</p>
+        <p style={{ color:'rgba(255,255,255,0.45)', fontSize:11, margin:'6px 0 0', letterSpacing:2, textTransform:'uppercase', fontWeight:500 }}>Attendance System</p>
       </div>
     </div>
   );
@@ -52,10 +52,10 @@ export function WelcomeScreen({ onLogin, onRegisterStudent, onRegisterTeacher })
             <p className="bismillah" style={{ color:'white', fontSize:22, margin:'0 0 6px' }}>
               بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيمِ
             </p>
-            <p style={{ color:'rgba(255,255,255,0.58)', fontSize:10.5, margin:'0 0 2px', fontStyle:'italic' }}>
+            <p style={{ color:'rgba(255,255,255,0.6)', fontSize:11, margin:'0 0 2px', fontStyle:'italic' }}>
               Bismillah ir-Rahman ir-Raheem
             </p>
-            <p style={{ color:'rgba(255,255,255,0.38)', fontSize:9.5, margin:'0 0 20px' }}>
+            <p style={{ color:'rgba(255,255,255,0.42)', fontSize:10, margin:'0 0 20px' }}>
               In the name of Allah, the Most Gracious, the Most Merciful
             </p>
 
@@ -68,7 +68,7 @@ export function WelcomeScreen({ onLogin, onRegisterStudent, onRegisterTeacher })
           </div>
         </div>
         <div style={{ background:'#F8F8F8', padding:'1.75rem 1.5rem 2.25rem', display:'flex', flexDirection:'column', gap:12 }}>
-          <p style={{ textAlign:'center', color:'var(--n500)', fontSize:13, marginBottom:2, fontWeight:500 }}>Choose how you want to continue</p>
+          <p style={{ textAlign:'center', color:'var(--n500)', fontSize:13, marginBottom:2, fontWeight:600 }}>Choose how you want to continue</p>
           <BigChoiceBtn en="Login"           ur={T.login}           icon={BookMarked}    onClick={onLogin}/>
           <BigChoiceBtn en="New Student"      ur={T.newAdmission}    icon={GraduationCap} onClick={onRegisterStudent} variant="secondary"/>
           <BigChoiceBtn en="I am a Maulana"   ur={T.registerMaulana} icon={Shield}        onClick={onRegisterTeacher} variant="ghost"/>
@@ -90,9 +90,12 @@ function BigChoiceBtn({ en, ur, icon: Icon, onClick, variant='primary' }) {
       <div style={{ width:36, height:36, borderRadius:10, background: variant==='primary'?'rgba(255,255,255,0.2)':'var(--g50)', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}>
         <Icon size={18} color={variant==='primary'?'white':'var(--g500)'} strokeWidth={2}/>
       </div>
-      <div style={{ textAlign:'left' }}>
-        <div style={{ fontSize:15.5, fontWeight:700, color:s.color, letterSpacing:-0.2 }}>{en}</div>
-        <span className="urdu-sub" style={{ color: variant==='primary'?'rgba(255,255,255,0.72)':'var(--n400)', textAlign:'center', display:'block', width:'100%' }}>{ur}</span>
+      <div style={{ flex:1, display:'flex', alignItems:'center', justifyContent:'space-between', gap:8, flexWrap:'wrap' }}>
+        <div style={{ fontSize:16, fontWeight:700, color:s.color, letterSpacing:-0.2, textAlign:'left' }}>{en}</div>
+        <span className="urdu" style={{
+          color: variant==='primary' ? 'rgba(255,255,255,0.9)' : 'var(--n500)',
+          fontSize:15, textAlign:'right', lineHeight:1.3,
+        }}>{ur}</span>
       </div>
     </button>
   );
@@ -102,7 +105,12 @@ function PasswordInp({ label, urdu, placeholder, value, onChange, err, onKeyDown
   const [show, setShow] = useState(false);
   return (
     <div className="field">
-      {label && <label className="field-label">{label}{urdu && <span className="urdu-sub" style={{ display:'block', textTransform:'none', fontWeight:500, fontStyle:'italic', letterSpacing:0.1, color:'var(--n400)', marginTop:2 }}>{urdu}</span>}</label>}
+      {label && (
+        <label className="field-label">
+          <span>{label}</span>
+          {urdu && <span className="urdu-sub" style={{ textTransform:'none', fontWeight:500, fontSize:13 }}>{urdu}</span>}
+        </label>
+      )}
       <div style={{ position:'relative' }}>
         <input className={`field-input${err?' has-error':''}`} type={show?'text':'password'}
           placeholder={placeholder} value={value} onChange={onChange} onKeyDown={onKeyDown}
@@ -224,7 +232,7 @@ export function RegisterScreen({ initialRole='student', onBack, onSuccess }) {
             <AlertTriangle size={16} color="#D97706" strokeWidth={2} style={{ flexShrink:0, marginTop:1 }}/>
             <div>
               <p style={{ fontSize:12.5, color:'#92400E', margin:0, lineHeight:1.5, fontWeight:600 }}>The lead Maulana must approve you first</p>
-              <p className="urdu-sub" style={{ color:'#92400E', margin:'2px 0 0', textAlign:'center', display:'block' }}>{T.pendingApproval}</p>
+              <p className="urdu" style={{ fontSize:13, color:'#92400E', margin:'4px 0 0', textAlign:'right', display:'block', lineHeight:1.85 }}>{T.pendingApproval}</p>
             </div>
           </div>
         )}
@@ -234,7 +242,7 @@ export function RegisterScreen({ initialRole='student', onBack, onSuccess }) {
           value={form.name} onChange={f('name')} err={errs.name}/>
         <Inp label="Email Address" urdu={T.email} type="email" placeholder="your@email.com"
           value={form.email} onChange={f('email')} err={errs.email}/>
-        <PasswordInp label="Password (8+ characters, 1 number)" urdu={T.passwordHint}
+        <PasswordInp label="Password (8+ characters, 1 number)" urdu="8 letters se zyada, 1 number zaroori"
           placeholder="e.g. Ahmed2025" value={form.password} onChange={f('password')} err={errs.password}/>
         <PasswordInp label="Confirm Password" urdu={T.confirmPassword}
           placeholder="Type it again" value={form.confirm} onChange={f('confirm')} err={errs.confirm}/>
@@ -261,11 +269,14 @@ export function RegisterScreen({ initialRole='student', onBack, onSuccess }) {
 
             <Inp label="Date of Birth" urdu={T.dateOfBirth} type="date" value={form.dob} onChange={f('dob')}/>
 
-            <Inp label="Phone Number" urdu={T.phoneNumber} type="tel" placeholder="+44 7700 000000"
+            <Inp label="Phone Number" urdu="Apna Phone Number" type="tel" placeholder="+44 7700 000000"
               value={form.phone} onChange={f('phone')}/>
 
             <div className="field">
-              <label className="field-label">Address<span className="urdu-sub" style={{ textTransform:'none', fontWeight:500 }}>{T.address}</span></label>
+              <label className="field-label">
+                <span>Address</span>
+                <span className="urdu-sub">{T.address}</span>
+              </label>
               <textarea
                 value={form.address}
                 onChange={f('address')}
@@ -286,7 +297,7 @@ export function RegisterScreen({ initialRole='student', onBack, onSuccess }) {
         <Btn variant="primary" onClick={submit}>
           {role==='teacher' ? (isFirst?'Create Account':'Send for Approval') : 'Finish Registration'}
         </Btn>
-        <p className="urdu-sub" style={{ textAlign:'center', margin:'8px 0 0', display:'block' }}>
+        <p className="urdu" style={{ textAlign:'right', margin:'8px 0 0', fontSize:14, display:'block', lineHeight:1.85 }}>
           {role==='teacher' ? (isFirst ? T.completeAdmission : T.submitForApproval) : T.completeAdmission}
         </p>
       </div>

@@ -5,8 +5,10 @@ import {
   GraduationCap, Phone, Mail, Hash, UserCheck,
   Download, Printer, Info, CreditCard, Clock,
   AlertCircle, Smartphone, Copy, Check, MapPin, Image as ImageIcon,
+  Share2, Receipt,
 } from 'lucide-react';
 import { Header, Avatar, Toast, Card, StatCard, Pill, Empty, QRCode, ProgressBar, BigBtn, Sub } from '../components/UI';
+import { ReceiptModal } from '../components/ReceiptModal';
 import { T } from '../utils/translate';
 import {
   getStudentStats, fmtDate, makeQRValue,
@@ -70,15 +72,17 @@ function SHome({ user, stats, goQR, goFees }) {
         {/* Fee alert — only if action needed */}
         {feeStatus !== 'paid' && (
           <div onClick={goFees} style={{ background: feeStatus==='pending' ? 'linear-gradient(135deg,#92400E,#D97706)' : 'linear-gradient(135deg,#991B1B,#E5412A)', borderRadius:'var(--r-lg)', padding:'16px 18px', cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'space-between', boxShadow:'0 4px 16px rgba(229,65,42,0.25)' }}>
-            <div>
-              <p style={{ color:'white', fontSize:14.5, fontWeight:700, margin:0 }}>
-                {feeStatus==='pending' ? 'Fee is being checked' : `Fee Due — ₹${settings.monthlyAmount || 500}`}
-              </p>
-              <p style={{ color:'rgba(255,255,255,0.7)', fontSize:11, margin:'2px 0 0', fontStyle:'italic' }}>
-                {feeStatus==='pending' ? T.awaitingVerify : "فیس باقی ہے"}
-              </p>
+            <div style={{ flex:1, minWidth:0, paddingRight:12 }}>
+              <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', gap:8, flexWrap:'wrap' }}>
+                <span style={{ color:'white', fontSize:14.5, fontWeight:700 }}>
+                  {feeStatus==='pending' ? 'Fee is being checked' : `Fee Due — ₹${settings.monthlyAmount || 500}`}
+                </span>
+                <span className="urdu" style={{ color:'rgba(255,255,255,0.92)', fontSize:14.5, textAlign:'right', lineHeight:1.6 }}>
+                  {feeStatus==='pending' ? T.awaitingVerify : "فیس باقی ہے"}
+                </span>
+              </div>
             </div>
-            <div style={{ background:'rgba(255,255,255,0.18)', borderRadius:10, padding:'8px 14px' }}>
+            <div style={{ background:'rgba(255,255,255,0.18)', borderRadius:10, padding:'8px 14px', flexShrink:0 }}>
               <p style={{ color:'white', fontSize:12, fontWeight:700, margin:0 }}>{feeStatus==='pending'?'Check':'Pay'}</p>
             </div>
           </div>
@@ -91,21 +95,23 @@ function SHome({ user, stats, goQR, goFees }) {
         </div>
 
         {/* QR shortcut — the most important action */}
-        <div onClick={goQR} style={{ background:'linear-gradient(135deg,var(--g800),var(--g600))', borderRadius:'var(--r-lg)', padding:'20px', cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'space-between', boxShadow:'var(--shadow-green)' }}>
-          <div>
-            <p style={{ color:'white', fontSize:16, fontWeight:700, margin:0, letterSpacing:-0.2 }}>Show My QR Code</p>
-            <p style={{ color:'rgba(255,255,255,0.55)', fontSize:11.5, margin:'3px 0 0', fontStyle:'italic' }}>QR کوڈ دکھائیں</p>
+        <div onClick={goQR} style={{ background:'linear-gradient(135deg,var(--g800),var(--g600))', borderRadius:'var(--r-lg)', padding:'18px 20px', cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'space-between', boxShadow:'var(--shadow-green)' }}>
+          <div style={{ flex:1, minWidth:0, paddingRight:12 }}>
+            <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', gap:8, flexWrap:'wrap' }}>
+              <span style={{ color:'white', fontSize:16, fontWeight:700, letterSpacing:-0.2 }}>Show My QR Code</span>
+              <span className="urdu" style={{ color:'rgba(255,255,255,0.9)', fontSize:15, textAlign:'right', lineHeight:1.6 }}>QR کوڈ دکھائیں</span>
+            </div>
           </div>
-          <div style={{ background:'rgba(255,255,255,0.14)', borderRadius:12, padding:14 }}>
-            <QrCode size={28} color="white" strokeWidth={1.8}/>
+          <div style={{ background:'rgba(255,255,255,0.14)', borderRadius:12, padding:12, flexShrink:0 }}>
+            <QrCode size={26} color="white" strokeWidth={1.8}/>
           </div>
         </div>
 
         {/* Recent attendance — just last 5, no extra cards */}
         <Card>
-          <div style={{ marginBottom:12 }}>
-            <p style={{ fontSize:13, fontWeight:700, color:'var(--n700)', margin:0 }}>Recent Attendance</p>
-            <p className="urdu-sub" style={{textAlign:"center",display:"block",width:"100%",marginTop:3}}>پچھلی حاضری</p>
+          <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:12 }}>
+            <p style={{ fontSize:13.5, fontWeight:700, color:'var(--n700)', margin:0 }}>Recent Attendance</p>
+            <span className="urdu" style={{ textAlign:'right', fontSize:13.5, lineHeight:1.6, color:'var(--n500)' }}>پچھلی حاضری</span>
           </div>
           {history.length===0
             ? <p style={{ color:'var(--n400)', fontSize:13, padding:'16px 0', textAlign:'center' }}>No records yet</p>
@@ -215,7 +221,7 @@ function SQR({ user }) {
             <Printer size={16} strokeWidth={2}/>Print
           </button>
         </div>
-        <p className="urdu-sub" style={{margin:"-4px 0 4px",textAlign:"center"}}>ڈاؤنلوڈ کریں · پرنٹ کریں</p>
+        <p className="urdu" style={{margin:"-4px 0 4px",textAlign:'right',display:'block',width:'100%',fontSize:14,lineHeight:1.85,color:'var(--n500)'}}>ڈاؤنلوڈ کریں · پرنٹ کریں</p>
 
         {/* Simple 3-step guide instead of long list */}
         <Card style={{ width:'100%' }}>
@@ -223,7 +229,7 @@ function SQR({ user }) {
             <Info size={16} color="var(--g500)" strokeWidth={2} style={{ flexShrink:0, marginTop:2 }}/>
             <div>
               <p style={{ fontSize:13, fontWeight:700, color:'var(--n900)', margin:0 }}>Phones aren't allowed in Madrasa?</p>
-              <p style={{ fontSize:11.5, color:'var(--n400)', margin:'2px 0 0', fontStyle:'italic' }}>مدرسے میں فون نہیں لے جا سکتے؟</p>
+              <p className="urdu" style={{ fontSize:14, color:'var(--n500)', margin:'4px 0 0', display:'block', textAlign:'right', lineHeight:1.85 }}>مدرسے میں فون نہیں لے جا سکتے؟</p>
             </div>
           </div>
           <p style={{ fontSize:12.5, color:'var(--n600)', margin:'10px 0 0', lineHeight:1.7 }}>
@@ -238,9 +244,10 @@ function SQR({ user }) {
 
 // ── Fees Tab — simplified flow ──────────────────────────────────────────────────
 function SFees({ user, refresh }) {
-  const [month,    setMonth]    = useState(currentMonthKey());
-  const [showPay,  setShowPay]  = useState(false);
-  const [toast,    setToast]    = useState(null);
+  const [month,       setMonth]       = useState(currentMonthKey());
+  const [showPay,     setShowPay]     = useState(false);
+  const [receiptData, setReceiptData] = useState(null);
+  const [toast,       setToast]       = useState(null);
   const [, tick] = useState(0);
   const re = () => { tick(n=>n+1); refresh(); };
   const toast_ = (msg, type='success') => setToast({ msg, type });
@@ -266,7 +273,10 @@ function SFees({ user, refresh }) {
       <div className="page-body">
 
         <div>
-          <label className="field-label" style={{ display:'block', marginBottom:6 }}>Select Month<span style={{ display:'block', fontWeight:500, fontStyle:'italic', textTransform:'none', letterSpacing:0.1, fontSize:10.5, color:'var(--n400)', marginTop:2 }}>مہینہ چنیں</span></label>
+          <label className="field-label" style={{ display:'block', marginBottom:6 }}>
+            Select Month
+            <span className="urdu" style={{ display:'block', fontWeight:500, textTransform:'none', letterSpacing:0, fontSize:14, color:'var(--n500)', marginTop:3, textAlign:'right', lineHeight:1.6 }}>مہینہ چنیں</span>
+          </label>
           <select value={month} onChange={e => setMonth(e.target.value)} className="field-select">
             {months.map(m => <option key={m} value={m}>{fmtMonth(m)}{m===currentMonthKey()?' (Current)':''}</option>)}
           </select>
@@ -278,12 +288,36 @@ function SFees({ user, refresh }) {
             <ss.Icon size={26} color={ss.iconColor} strokeWidth={2}/>
           </div>
           <div style={{ flex:1 }}>
-            <p style={{ fontSize:12, color:ss.tc, margin:'0 0 3px', fontWeight:600 }}>{fmtMonth(month)}</p>
-            <p style={{ fontSize:17, fontWeight:800, color:ss.tc, margin:0, letterSpacing:-.3 }}>{ss.label}</p>
-            <p style={{ fontSize:11, color:ss.tc, margin:'2px 0 0', fontStyle:'italic' }}>{ss.ur}</p>
-            {feeState==='unpaid' && month===currentMonthKey() && <p style={{ fontSize:22, fontWeight:800, color:ss.tc, margin:'6px 0 0', letterSpacing:-1 }}>₹{amount.toLocaleString()}</p>}
+            <p style={{ fontSize:12, color:ss.tc, margin:'0 0 4px', fontWeight:600 }}>{fmtMonth(month)}</p>
+            <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', width:'100%' }}>
+              <p style={{ fontSize:18, fontWeight:800, color:ss.tc, margin:0, letterSpacing:-0.3 }}>{ss.label}</p>
+              <span className="urdu" style={{ fontSize:16, color:ss.tc, margin:0, textAlign:'right', lineHeight:1.6 }}>{ss.ur}</span>
+            </div>
+            {feeState==='unpaid' && month===currentMonthKey() && (
+              <p style={{ fontSize:22, fontWeight:800, color:ss.tc, margin:'6px 0 0', letterSpacing:-1 }}>₹{amount.toLocaleString()}</p>
+            )}
           </div>
         </div>
+
+        {/* View Receipt button if fee is paid or pending */}
+        {(feeState==='paid' || feeState==='pending') && (
+          <button
+            onClick={() => setReceiptData({ student: user, monthKey: month, record: rec, amount: rec?.amount || amount })}
+            style={{
+              width:'100%', padding:'13px 16px', borderRadius:'var(--r)',
+              border:'1.5px solid var(--g400)', background:'var(--g50)', color:'var(--g500)',
+              fontWeight:700, fontSize:14, cursor:'pointer', fontFamily:'inherit',
+              display:'flex', alignItems:'center', justifyContent:'space-between',
+              boxShadow:'var(--shadow-xs)', marginTop:-4
+            }}
+          >
+            <div style={{ display:'flex', alignItems:'center', gap:8 }}>
+              <Receipt size={17} color="var(--g500)" strokeWidth={2.2}/>
+              <span>View & Share Receipt</span>
+            </div>
+            <span className="urdu" style={{ fontSize:14, color:'var(--g500)', lineHeight:1.6 }}>رسید دیکھیں اور بھیجیں</span>
+          </button>
+        )}
 
         {feeState==='unpaid' && month===currentMonthKey() && (
           <BigBtn en="Pay Now" ur="ابھی فیس ادا کریں" icon={CreditCard} onClick={() => setShowPay(true)}/>
@@ -298,9 +332,12 @@ function SFees({ user, refresh }) {
           </Card>
         )}
 
-        {/* History — compact */}
+        {/* History — compact with receipt download */}
         <div>
-          <p style={{ fontSize:13, fontWeight:700, color:'var(--n700)', margin:'0 0 10px' }}>Payment History <span style={{ fontSize:11, fontWeight:500, color:'var(--n400)', fontStyle:'italic' }}></span></p>
+          <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', margin:'0 0 10px' }}>
+            <p style={{ fontSize:13.5, fontWeight:700, color:'var(--n700)', margin:0 }}>Payment History</p>
+            <span className="urdu" style={{ fontSize:13.5, color:'var(--n500)', textAlign:'right', lineHeight:1.6 }}>پہلے کا حساب</span>
+          </div>
           {history.length===0
             ? <Card><p style={{ color:'var(--n400)', fontSize:13, textAlign:'center', padding:'16px 0' }}>No payments yet</p></Card>
             : history.map(({ month:m, record:r }) => {
@@ -315,7 +352,21 @@ function SFees({ user, refresh }) {
                     <p style={{ fontSize:13.5, fontWeight:600, color:'var(--n900)', margin:0 }}>{fmtMonth(m)}</p>
                     <p style={{ fontSize:11, color:'var(--n400)', margin:'2px 0 0' }}>{r.method==='cash'?'Cash':'Online'}</p>
                   </div>
-                  <Pill color={st==='paid'?'green':st==='pending'?'amber':'red'}>{s.label}</Pill>
+                  <div style={{ display:'flex', alignItems:'center', gap:8 }}>
+                    <button
+                      onClick={() => setReceiptData({ student: user, monthKey: m, record: r, amount: r.amount || amount })}
+                      style={{
+                        padding:'5px 9px', borderRadius:7, border:'1px solid var(--n200)',
+                        background:'var(--n50)', color:'var(--n700)', fontSize:11.5, fontWeight:600,
+                        cursor:'pointer', fontFamily:'inherit', display:'flex', alignItems:'center', gap:4
+                      }}
+                      title="View & Share Receipt"
+                    >
+                      <Receipt size={12} color="var(--g500)"/>
+                      <span>Receipt</span>
+                    </button>
+                    <Pill color={st==='paid'?'green':st==='pending'?'amber':'red'}>{s.label}</Pill>
+                  </div>
                 </div>
               );
             })
@@ -327,7 +378,26 @@ function SFees({ user, refresh }) {
         <PaymentModal
           user={user} monthKey={month} amount={amount} settings={settings}
           onClose={() => setShowPay(false)}
-          onPaid={() => { setShowPay(false); re(); toast_('Sent! Maulana will check it soon.'); }}
+          onPaid={(newRec) => {
+            setShowPay(false);
+            re();
+            toast_('Payment submitted! Receipt is ready.');
+            setReceiptData({
+              student: user,
+              monthKey: month,
+              record: newRec || { status:'pending', method:'online', amount, submittedAt:new Date().toISOString() },
+              amount
+            });
+          }}
+        />
+      )}
+      {receiptData && (
+        <ReceiptModal
+          student={receiptData.student}
+          monthKey={receiptData.monthKey}
+          record={receiptData.record}
+          amount={receiptData.amount}
+          onClose={() => setReceiptData(null)}
         />
       )}
       {toast && <Toast msg={toast.msg} type={toast.type} onDone={() => setToast(null)}/>}
@@ -492,8 +562,17 @@ function PaymentModal({ user, monthKey, amount, settings, onClose, onPaid }) {
       return;
     }
     const ok = studentSubmitPayment(monthKey, user.id, txnId, amount, screenshot);
-    if (ok) onPaid();
-    else setErr('Already submitted for this month');
+    if (ok) {
+      onPaid({
+        status: 'pending',
+        method: 'online',
+        txnId: txnId.trim().toUpperCase(),
+        amount,
+        submittedAt: new Date().toISOString(),
+      });
+    } else {
+      setErr('Already submitted for this month');
+    }
   };
 
   return (
@@ -511,7 +590,7 @@ function PaymentModal({ user, monthKey, amount, settings, onClose, onPaid }) {
             <h3 style={{ fontSize:16.5, fontWeight:700, color:'var(--n900)', margin:0 }}>
               {step==='choose' ? 'Pay Fees' : 'Confirm Payment'}
             </h3>
-            <span className="urdu-sub" style={{textAlign:"center",display:"block"}}>{step==='choose' ? 'ابھی فیس ادا کریں' : 'بھیج دیں'}</span>
+            <span className="urdu" style={{textAlign:'right',display:'block',width:'100%',fontSize:14,lineHeight:1.85,color:'rgba(255,255,255,0.7)',marginTop:2}}>{step==='choose' ? 'ابھی فیس ادا کریں' : 'بھیج دیں'}</span>
           </div>
           <button onClick={onClose} style={{ background:'var(--n100)', border:'none', borderRadius:'50%', width:34, height:34, cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center' }}>
             <XCircle size={16} color="var(--n600)" strokeWidth={2}/>
@@ -522,15 +601,18 @@ function PaymentModal({ user, monthKey, amount, settings, onClose, onPaid }) {
 
           {/* ── Step 1: Choose payment method ── */}
           {step==='choose' && <>
-            <div style={{ background:'linear-gradient(135deg,#0a3d20,#1D9E75)', borderRadius:'var(--r-lg)', padding:'18px 20px', textAlign:'center' }}>
-              <span className="urdu-sub" style={{ color:'rgba(255,255,255,0.65)', fontSize:12 }}>فیس باقی ہے</span>
-              <p style={{ color:'white', fontSize:32, fontWeight:800, margin:'4px 0 0', letterSpacing:-1 }}>₹{amount.toLocaleString()}</p>
+            <div style={{ background:'linear-gradient(135deg,#0a3d20,#1D9E75)', borderRadius:'var(--r-lg)', padding:'18px 20px', display:'flex', alignItems:'center', justifyContent:'space-between' }}>
+              <div>
+                <span style={{ color:'rgba(255,255,255,0.75)', fontSize:12, fontWeight:600 }}>Total Due</span>
+                <p style={{ color:'white', fontSize:28, fontWeight:800, margin:'2px 0 0', letterSpacing:-0.5 }}>₹{amount.toLocaleString()}</p>
+              </div>
+              <span className="urdu" style={{ color:'rgba(255,255,255,0.92)', fontSize:16, textAlign:'right', lineHeight:1.3 }}>فیس باقی ہے</span>
             </div>
 
             <div>
               <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:10 }}>
-                <p style={{ fontSize:12, fontWeight:700, color:'var(--n600)', margin:0 }}>Choose UPI App</p>
-                <span className="urdu-sub" style={{textAlign:"center",display:"block"}}>ایپ چنیں</span>
+                <p style={{ fontSize:12.5, fontWeight:700, color:'var(--n600)', margin:0 }}>Choose UPI App</p>
+                <span className="urdu" style={{ textAlign:'right', fontSize:13.5, lineHeight:1.3, color:'var(--n500)' }}>ایپ چنیں</span>
               </div>
               <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:10 }}>
                 {UPI_APPS.map(app => (
@@ -556,9 +638,9 @@ function PaymentModal({ user, monthKey, amount, settings, onClose, onPaid }) {
             </div>
 
             <div style={{ background:'var(--n50)', borderRadius:'var(--r)', padding:'14px 16px' }}>
-              <div style={{ display:'flex', justifyContent:'space-between', marginBottom:8 }}>
-                <p style={{ fontSize:11, color:'var(--n500)', margin:0, fontWeight:600 }}>Or pay directly to UPI ID</p>
-                <span className="urdu-sub" style={{textAlign:"center",display:"block"}}>یا سیدھا UPI ID پر بھیجیں</span>
+              <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:8 }}>
+                <p style={{ fontSize:11.5, color:'var(--n500)', margin:0, fontWeight:600 }}>Or pay directly to UPI ID</p>
+                <span className="urdu" style={{ textAlign:'right', fontSize:13, lineHeight:1.3, color:'var(--n500)' }}>یا سیدھا UPI ID پر بھیجیں</span>
               </div>
               <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', background:'white', border:'1.5px solid var(--n200)', borderRadius:'var(--r-sm)', padding:'11px 14px' }}>
                 <span style={{ fontFamily:'monospace', fontSize:14.5, fontWeight:700, color:'var(--g400)' }}>{upiId}</span>
@@ -591,15 +673,15 @@ function PaymentModal({ user, monthKey, amount, settings, onClose, onPaid }) {
                 {usedApp ? usedApp.utrHelp : "Open your UPI app → payment history → find this payment → copy the UTR / Reference ID"}
               </p>
               {usedApp?.utrHelpUr && (
-                <span className="urdu-sub" style={{ display:'block', marginTop:6, color:'var(--n500)' }}>{usedApp.utrHelpUr}</span>
+                <span className="urdu" style={{ display:'block', marginTop:8, textAlign:'right', fontSize:13, lineHeight:1.85, color:'var(--n500)' }}>{usedApp.utrHelpUr}</span>
               )}
             </div>
 
             {/* Transaction ID */}
             <div className="field">
               <label className="field-label">
-                Payment Code (UTR / Reference ID)
-                <span className="urdu-sub" style={{ textTransform:'none', fontWeight:500 }}>ادائیگی کا کوڈ</span>
+                <span>Payment Code (UTR / Reference ID)</span>
+                <span className="urdu" style={{ textTransform:'none', fontWeight:500, fontSize:13, textAlign:'right', display:'block', width:'100%', lineHeight:1.85 }}>ادائیگی کا کوڈ</span>
               </label>
               <input
                 className={`field-input${err && !txnId.trim() ? ' has-error' : ''}`}
@@ -614,8 +696,8 @@ function PaymentModal({ user, monthKey, amount, settings, onClose, onPaid }) {
             {/* Screenshot upload */}
             <div className="field">
               <label className="field-label">
-                Payment Screenshot
-                <span className="urdu-sub" style={{ textTransform:'none', fontWeight:500 }}>ادائیگی کی تصویر لگائیں</span>
+                <span>Payment Screenshot</span>
+                <span className="urdu" style={{ textTransform:'none', fontWeight:500, fontSize:13, textAlign:'right', display:'block', width:'100%', lineHeight:1.85 }}>ادائیگی کی تصویر لگائیں</span>
               </label>
 
               {screenshot ? (
@@ -648,7 +730,7 @@ function PaymentModal({ user, monthKey, amount, settings, onClose, onPaid }) {
                     <p style={{ fontSize:14, fontWeight:700, color:'var(--n700)', margin:0 }}>
                       {uploading ? 'Processing…' : 'Tap to upload screenshot'}
                     </p>
-                    <span className="urdu-sub" style={{ display:'block', marginTop:3, textAlign:'center' }}>ادائیگی کی تصویر لگائیں</span>
+                    <span className="urdu" style={{ display:'block', marginTop:4, textAlign:'right', width:'100%', fontSize:14, lineHeight:1.85, color:'var(--n500)' }}>ادائیگی کی تصویر لگائیں</span>
                     <p style={{ fontSize:11, color:'var(--n400)', margin:'5px 0 0' }}>JPG, PNG — any payment screenshot</p>
                   </div>
                 </button>
@@ -662,7 +744,7 @@ function PaymentModal({ user, monthKey, amount, settings, onClose, onPaid }) {
               style={{ width:'100%', padding:'14px', borderRadius:'var(--r-sm)', border:'none', background:'var(--g400)', color:'white', fontWeight:700, fontSize:14.5, cursor:'pointer', fontFamily:'inherit', boxShadow:'var(--shadow-green)' }}>
               Submit for Verification
             </button>
-            <span className="urdu-sub" style={{ textAlign:'center', display:'block', marginTop:-8 }}>بھیج دیں</span>
+            <span className="urdu" style={{ textAlign:'right', display:'block', width:'100%', marginTop:-4, marginBottom:4, fontSize:14, lineHeight:1.85, color:'var(--n500)' }}>بھیج دیں</span>
 
             <button onClick={() => { setStep('choose'); setErr(''); }}
               style={{ width:'100%', padding:'13px', borderRadius:'var(--r-sm)', border:'1.5px solid var(--n200)', background:'transparent', color:'var(--n600)', fontWeight:600, fontSize:13.5, cursor:'pointer', fontFamily:'inherit' }}>

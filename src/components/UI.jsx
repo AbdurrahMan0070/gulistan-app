@@ -33,24 +33,30 @@ export function Header({ title, sub, urdu, showBack, onBack, rightEl }) {
           </g>
         ))}
       </svg>
-      <div className="hcontent" style={{ display:'flex', alignItems:'flex-start', justifyContent:'space-between' }}>
-        <div style={{ display:'flex', alignItems:'center', gap:10 }}>
+      <div className="hcontent" style={{ display:'flex', alignItems:'center', justifyContent:'space-between', gap:12 }}>
+        <div style={{ display:'flex', alignItems:'center', gap:10, flex:1, minWidth:0 }}>
           {showBack && (
             <button className="btn-icon" onClick={onBack}>
               <ArrowLeft size={18} />
             </button>
           )}
-          <div>
+          <div style={{ flex:1, minWidth:0 }}>
             <div style={{ display:'flex', alignItems:'center', gap:7, marginBottom:4 }}>
               <BookMarked size={13} color="rgba(255,255,255,0.55)" strokeWidth={2}/>
               <span style={{ color:'rgba(255,255,255,0.55)', fontSize:10, letterSpacing:1.5, textTransform:'uppercase', fontWeight:600 }}>Noorul-Uloom · Gulistan</span>
             </div>
             <h2 style={{ color:'white', fontSize:18, fontWeight:700, margin:0, lineHeight:1.3, letterSpacing:-0.3 }}>{title}</h2>
-            {sub && <p style={{ color:'rgba(255,255,255,0.55)', fontSize:12, margin:'3px 0 0', fontWeight:400 }}>{sub}</p>}
-            {urdu && <p className="urdu-sub" style={{ color:'rgba(255,255,255,0.6)', margin:'4px 0 0', display:'block', textAlign:'center', width:'100%' }}>{urdu}</p>}
+            {sub && <p style={{ color:'rgba(255,255,255,0.65)', fontSize:12, margin:'3px 0 0', fontWeight:400 }}>{sub}</p>}
           </div>
         </div>
-        {rightEl}
+        <div style={{ display:'flex', alignItems:'center', gap:10, flexShrink:0 }}>
+          {urdu && (
+            <span className="urdu" style={{ color:'rgba(255,255,255,0.92)', fontSize:16, lineHeight:1.6, textAlign:'right' }}>
+              {urdu}
+            </span>
+          )}
+          {rightEl}
+        </div>
       </div>
     </div>
   );
@@ -86,7 +92,12 @@ export function Toast({ msg, type = 'success', onDone }) {
 export function Field({ label, urdu, err, children }) {
   return (
     <div className="field">
-      {label && <label className="field-label" style={{ display:'flex', flexDirection:'column', alignItems:'flex-start', gap:2 }}>{label}{urdu && <span className="urdu-sub" style={{ textTransform:'none', fontWeight:500, display:'block', textAlign:'center', width:'100%' }}>{urdu}</span>}</label>}
+      {label && (
+        <label className="field-label">
+          <span style={{ fontSize:'inherit', fontWeight:'inherit', color:'inherit' }}>{label}</span>
+          {urdu && <span className="urdu-sub" style={{ textTransform:'none', fontWeight:500, fontSize:14 }}>{urdu}</span>}
+        </label>
+      )}
       {children}
       {err && <span className="field-error">{err}</span>}
     </div>
@@ -113,7 +124,7 @@ export function Sel({ label, urdu, children, ...props }) {
 export function Btn({ children, variant='primary', size='md', icon: Icon, style:ext, ...props }) {
   return (
     <button className={`btn btn-${variant}${size==='sm'?' btn-sm':size==='xs'?' btn-xs':''}`} style={ext} {...props}>
-      {Icon && <Icon size={size==='sm'?15:16} strokeWidth={2.2}/>}
+      {Icon && <Icon size={size==='sm'?15:16} strokeWidth={2}/>}
       {children}
     </button>
   );
@@ -137,11 +148,21 @@ export function Segment({ options, value, onChange }) {
 export function StatCard({ label, value, color, iconBg, Icon, sub }) {
   return (
     <div className="stat-card">
-      <div className="stat-icon" style={{ background: iconBg || '#F3F4F6' }}>
-        {Icon && <Icon size={18} color={color || '#6B6B6B'} strokeWidth={2}/>}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
+        <div className="stat-icon" style={{ background: iconBg || '#F3F4F6' }}>
+          {Icon && <Icon size={18} color={color || '#6B6B6B'} strokeWidth={2}/>}
+        </div>
+        {sub && (
+          <span className="urdu" style={{
+            color: sub.color || 'var(--n400)',
+            fontSize: 14,
+            fontWeight: 600,
+            textAlign: 'right',
+            lineHeight: 1.2,
+          }}>{sub.text}</span>
+        )}
       </div>
       <div className="stat-value" style={{ color: color || '#1A1A1A' }}>{value}</div>
-      {sub && <div className="stat-sub" style={{ color: sub.color || '#9A9A9A' }}>{sub.text}</div>}
       <div className="stat-label">{label}</div>
     </div>
   );
@@ -177,7 +198,7 @@ export function Empty({ Icon = ClipboardList, title, sub }) {
   return (
     <div className="empty-state">
       <div className="empty-icon" style={{ color:'#C4C4C4' }}>
-        <Icon size={48} strokeWidth={1.2}/>
+        <Icon size={48} strokeWidth={1.5}/>
       </div>
       <h3>{title}</h3>
       {sub && <p>{sub}</p>}
@@ -204,15 +225,15 @@ export function SearchBar({ value, onChange, placeholder }) {
 // ── Urdu subtitle — real Urdu script, Jameel Khushkhati font ────────────────
 export function Sub({ children }) {
   if (!children) return null;
-  return <span className="urdu-sub" style={{ textAlign:'center', display:'block', width:'100%' }}>{children}</span>;
+  return <span className="urdu" style={{ display:'block', width:'100%', textAlign:'right', fontSize:14.5, lineHeight:1.65, color:'var(--n500)', marginTop:3 }}>{children}</span>;
 }
 
 // ── Label with English + Urdu stacked ────────────────────────────────────────
-export function Label2({ en, ur, size = 14, weight = 700, color = 'var(--n900)' }) {
+export function Label2({ en, ur, size = 15, weight = 700, color = 'var(--n900)' }) {
   return (
-    <div>
-      <div style={{ fontSize: size, fontWeight: weight, color, letterSpacing: -0.2 }}>{en}</div>
-      {ur && <span className="urdu-sub">{ur}</span>}
+    <div style={{ display:'flex', alignItems:'baseline', justifyContent:'space-between', width:'100%', marginBottom:4 }}>
+      <span style={{ fontSize: size, fontWeight: weight, color, letterSpacing: -0.2 }}>{en}</span>
+      {ur && <span className="urdu" style={{ fontSize: 14, lineHeight: 1.6, color: 'var(--n500)', textAlign: 'right' }}>{ur}</span>}
     </div>
   );
 }
@@ -224,8 +245,8 @@ export function BigBtn({ en, ur, icon: Icon, onClick, variant = 'primary', style
   const border = variant === 'ghost' ? '1.5px solid var(--n200)' : 'none';
   return (
     <button onClick={onClick} style={{
-      width: '100%', padding: '16px 18px', borderRadius: 'var(--r)', border, background: bg,
-      cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 14, fontFamily: 'inherit',
+      width: '100%', padding: '15px 18px', borderRadius: 'var(--r)', border, background: bg,
+      cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 13, fontFamily: 'inherit',
       boxShadow: variant === 'primary' ? 'var(--shadow-green)' : variant === 'danger' ? '0 4px 16px rgba(229,65,42,0.22)' : 'none',
       ...ext,
     }}>
@@ -234,9 +255,14 @@ export function BigBtn({ en, ur, icon: Icon, onClick, variant = 'primary', style
           <Icon size={19} color={variant === 'ghost' ? 'var(--n600)' : 'white'} strokeWidth={2}/>
         </div>
       )}
-      <div style={{ textAlign: 'left', flex: 1 }}>
-        <div style={{ fontSize: 15.5, fontWeight: 700, color, letterSpacing: -0.2 }}>{en}</div>
-        {ur && <span className="urdu-sub" style={{ color: variant === 'ghost' ? 'var(--n400)' : 'rgba(255,255,255,0.72)', textAlign:'center', display:'block', width:'100%' }}>{ur}</span>}
+      <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8, flexWrap: 'wrap' }}>
+        <span style={{ fontSize: 16, fontWeight: 700, color, letterSpacing: -0.2, textAlign: 'left' }}>{en}</span>
+        {ur && (
+          <span className="urdu" style={{
+            color: variant === 'ghost' ? 'var(--n500)' : 'rgba(255,255,255,0.92)',
+            fontSize: 14.5, textAlign: 'right', lineHeight: 1.55,
+          }}>{ur}</span>
+        )}
       </div>
     </button>
   );
@@ -269,7 +295,7 @@ export function QRCode({ value, size = 190 }) {
   return (
     <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} style={{ display:'block', borderRadius:10 }}>
       <rect width={size} height={size} fill="white"/>
-      {dark.map(([r,c]) => <rect key={`${r}-${c}`} x={c*cell} y={r*cell} width={cell-.3} height={cell-.3} fill="#0a1f12"/>)}
+      {dark.map(([r,c]) => <rect key={`${r}-${c}`} x={c*cell} y={r*cell} width={cell} height={cell} fill="#0a1f12" shapeRendering="crispEdges"/>)}
     </svg>
   );
 }
