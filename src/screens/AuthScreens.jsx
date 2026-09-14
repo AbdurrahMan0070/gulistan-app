@@ -108,7 +108,7 @@ function PasswordInp({ label, urdu, placeholder, value, onChange, err, onKeyDown
       {label && (
         <label className="field-label">
           <span>{label}</span>
-          {urdu && <span className="urdu-sub" style={{ textTransform:'none', fontWeight:500, fontSize:13 }}>{urdu}</span>}
+          {urdu && <span className="urdu-sub" style={{ textTransform:'none', fontWeight:500, fontSize:14, lineHeight:1.6 }}>{urdu}</span>}
         </label>
       )}
       <div style={{ position:'relative' }}>
@@ -242,7 +242,7 @@ export function RegisterScreen({ initialRole='student', onBack, onSuccess }) {
           value={form.name} onChange={f('name')} err={errs.name}/>
         <Inp label="Email Address" urdu={T.email} type="email" placeholder="your@email.com"
           value={form.email} onChange={f('email')} err={errs.email}/>
-        <PasswordInp label="Password (8+ characters, 1 number)" urdu="8 letters se zyada, 1 number zaroori"
+        <PasswordInp label="Password (8+ characters, 1 number)" urdu="کم از کم ۸ حروف اور ۱ نمبر"
           placeholder="e.g. Ahmed2025" value={form.password} onChange={f('password')} err={errs.password}/>
         <PasswordInp label="Confirm Password" urdu={T.confirmPassword}
           placeholder="Type it again" value={form.confirm} onChange={f('confirm')} err={errs.confirm}/>
@@ -269,7 +269,7 @@ export function RegisterScreen({ initialRole='student', onBack, onSuccess }) {
 
             <Inp label="Date of Birth" urdu={T.dateOfBirth} type="date" value={form.dob} onChange={f('dob')}/>
 
-            <Inp label="Phone Number" urdu="Apna Phone Number" type="tel" placeholder="+44 7700 000000"
+            <Inp label="Phone Number" urdu="اپنا فون نمبر" type="tel" placeholder="+44 7700 000000"
               value={form.phone} onChange={f('phone')}/>
 
             <div className="field">
