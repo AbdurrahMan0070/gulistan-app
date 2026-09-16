@@ -94,7 +94,7 @@ function BigChoiceBtn({ en, ur, icon: Icon, onClick, variant='primary' }) {
         <div style={{ fontSize:16, fontWeight:700, color:s.color, letterSpacing:-0.2, textAlign:'left' }}>{en}</div>
         <span className="urdu" style={{
           color: variant==='primary' ? 'rgba(255,255,255,0.92)' : 'var(--n500)',
-          fontSize:15.5, textAlign:'right', lineHeight:1.55,
+          fontSize:15, textAlign:'right', lineHeight:1.6,
         }}>{ur}</span>
       </div>
     </button>
@@ -231,8 +231,8 @@ export function RegisterScreen({ initialRole='student', onBack, onSuccess }) {
           <div style={{ background:'#FFFBEB', border:'1px solid #FDE68A', borderRadius:12, padding:'12px 14px', marginBottom:16, display:'flex', gap:10, alignItems:'flex-start' }}>
             <AlertTriangle size={16} color="#D97706" strokeWidth={2} style={{ flexShrink:0, marginTop:1 }}/>
             <div>
-              <p style={{ fontSize:12.5, color:'#92400E', margin:0, lineHeight:1.5, fontWeight:600 }}>The lead Maulana must approve you first</p>
-              <p className="urdu" style={{ fontSize:14.5, color:'#92400E', margin:'4px 0 0', textAlign:'right', display:'block', lineHeight:1.85 }}>{T.pendingApproval}</p>
+              <p style={{ fontSize:13, color:'#92400E', margin:0, lineHeight:1.5, fontWeight:600 }}>The lead Maulana must approve you first</p>
+              <p className="urdu" style={{ fontSize:15, color:'#92400E', margin:'4px 0 0', textAlign:'right', display:'block', lineHeight:1.85 }}>{T.pendingApproval}</p>
             </div>
           </div>
         )}

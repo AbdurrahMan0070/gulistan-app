@@ -121,7 +121,7 @@ function THome({ user, scanBtn, selDate, onScan, onFinalize }) {
             <AlertTriangle size={18} color="var(--warning)" strokeWidth={2} style={{ flexShrink:0 }}/>
             <div>
               <p style={{ margin:0, fontSize:13, color:'#92400E', fontWeight:600 }}>{unmarked} student{unmarked>1?'s':''} not marked yet</p>
-              <span className="urdu" style={{ color:'#B45309', display:'block', textAlign:'right', width:'100%', fontSize:14.5, lineHeight:1.8, marginTop:4 }}>ابھی تک مارک نہیں ہوئے</span>
+              <span className="urdu" style={{ color:'#B45309', display:'block', textAlign:'right', width:'100%', fontSize:15, lineHeight:1.8, marginTop:4 }}>ابھی تک مارک نہیں ہوئے</span>
             </div>
           </div>
         )}
@@ -142,7 +142,7 @@ function THome({ user, scanBtn, selDate, onScan, onFinalize }) {
 
         <Card>
           <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:12 }}>
-            <p style={{ fontSize:13.5, fontWeight:700, color:'var(--n700)', margin:0 }}>Today's Register</p>
+            <p style={{ fontSize:14, fontWeight:700, color:'var(--n700)', margin:0 }}>Today's Register</p>
             <span className="urdu" style={{ textAlign:'right', fontSize:15, lineHeight:1.6, color:'var(--n500)' }}>آج کا رجسٹر</span>
           </div>
           {students.length===0
@@ -239,7 +239,7 @@ function TAttendance({ selDate, setSelDate, scanBtn, onScan, onFinalize, refresh
           })
         }
 
-        <button onClick={onFinalize} style={{ width:'100%', padding:'13px', borderRadius:'var(--r-sm)', border:'1.5px solid var(--n200)', background:'transparent', color:'var(--n600)', fontWeight:600, fontSize:13.5, cursor:'pointer', fontFamily:'inherit', display:'flex', alignItems:'center', justifyContent:'center', gap:7, marginTop:4 }}>
+        <button onClick={onFinalize} style={{ width:'100%', padding:'13px', borderRadius:'var(--r-sm)', border:'1.5px solid var(--n200)', background:'transparent', color:'var(--n600)', fontWeight:600, fontSize:14, cursor:'pointer', fontFamily:'inherit', display:'flex', alignItems:'center', justifyContent:'center', gap:7, marginTop:4 }}>
           <Lock size={14}/> Finish Day
         </button>
       </div>
@@ -346,7 +346,7 @@ function TFees({ toast_, refresh: parentRefresh }) {
 
         <div>
           <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:10 }}>
-            <p style={{ fontSize:13.5, fontWeight:700, color:'var(--n700)', margin:0 }}>Each Student</p>
+            <p style={{ fontSize:14, fontWeight:700, color:'var(--n700)', margin:0 }}>Each Student</p>
             <span className="urdu" style={{ textAlign:'right', fontSize:15, lineHeight:1.6, color:'var(--n500)' }}>ہر طالب علم</span>
           </div>
           {students.length===0
@@ -388,7 +388,7 @@ function TFees({ toast_, refresh: parentRefresh }) {
                             style={{ width:'100%', borderRadius:'var(--r-sm)', border:'1.5px solid var(--n200)', objectFit:'cover', maxHeight:180, display:'block', cursor:'pointer' }}
                             onClick={() => window.open(rec.screenshot, '_blank')}
                           />
-                          <p style={{ fontSize:10.5, color:'var(--n400)', margin:'5px 0 0' }}>Tap to view full size</p>
+                          <p style={{ fontSize:11, color:'var(--n400)', margin:'5px 0 0' }}>Tap to view full size</p>
                         </div>
                       )}
                       {status==='pending' && !rec?.screenshot && (
@@ -461,7 +461,7 @@ function FeeSettingsSheet({ onClose, toast_ }) {
           <div style={{ width:40, height:4, background:'var(--n200)', borderRadius:2 }}/>
         </div>
         <div style={{ padding:'0 20px 16px', borderBottom:'1px solid var(--n100)', display:'flex', justifyContent:'space-between', alignItems:'center' }}>
-          <h3 style={{ fontSize:16.5, fontWeight:700, color:'var(--n900)', margin:0 }}>Fee Settings</h3>
+          <h3 style={{ fontSize:17, fontWeight:700, color:'var(--n900)', margin:0 }}>Fee Settings</h3>
           <button onClick={onClose} style={{ background:'var(--n100)', border:'none', borderRadius:'50%', width:34, height:34, cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center' }}>
             <X size={16} color="var(--n600)"/>
           </button>
@@ -476,7 +476,7 @@ function FeeSettingsSheet({ onClose, toast_ }) {
             <input type="text" value={form.upiId} onChange={f('upiId')} placeholder="madrasa@ybl" className="field-input" style={{ fontFamily:'monospace' }}/>
             <p style={{ fontSize:11, color:'var(--n400)', marginTop:6 }}>Students will pay to this UPI ID</p>
           </div>
-          <button onClick={save} style={{ width:'100%', padding:'13px', borderRadius:'var(--r-sm)', border:'none', background:'var(--g400)', color:'white', fontWeight:700, fontSize:14.5, cursor:'pointer', fontFamily:'inherit', boxShadow:'var(--shadow-green)' }}>
+          <button onClick={save} style={{ width:'100%', padding:'13px', borderRadius:'var(--r-sm)', border:'none', background:'var(--g400)', color:'white', fontWeight:700, fontSize:15, cursor:'pointer', fontFamily:'inherit', boxShadow:'var(--shadow-green)' }}>
             Save
           </button>
         </div>
@@ -681,7 +681,7 @@ function StudentFullRecord({ student, onClose }) {
                       width:30, height:30, borderRadius:8, display:'flex', alignItems:'center', justifyContent:'center',
                       background: status==='present' ? 'var(--g50)' : 'var(--danger-bg)',
                       border: `1px solid ${status==='present' ? 'var(--g100)' : '#FECACA'}`,
-                      fontSize:10.5, fontWeight:700, color: status==='present' ? 'var(--g500)' : 'var(--danger)',
+                      fontSize:11, fontWeight:700, color: status==='present' ? 'var(--g500)' : 'var(--danger)',
                     }}>
                       {new Date(date).getDate()}
                     </div>

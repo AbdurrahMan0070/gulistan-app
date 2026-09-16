@@ -207,8 +207,8 @@ export const saveFees   = (f) => SyncDB.set('gul_fees', f);
 
 export const getFeeSettings = () => SyncDB.get('gul_fee_settings') || {
   monthlyAmount: 500,
-  upiId: '',
-  upiName: 'Noorul-Uloom Gulistan',
+  upiId: '9820700711m@pnb',
+  upiName: 'MADARSA NURUL ULOOM TRUST',
   currency: 'INR',
 };
 export const saveFeeSettings = (s) => SyncDB.set('gul_fee_settings', s);

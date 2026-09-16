@@ -158,7 +158,7 @@ export function StatCard({ label, value, color, iconBg, Icon, sub }) {
             fontSize: 14,
             fontWeight: 600,
             textAlign: 'right',
-            lineHeight: 1.2,
+            lineHeight: 1.6,
           }}>{sub.text}</span>
         )}
       </div>
@@ -225,7 +225,7 @@ export function SearchBar({ value, onChange, placeholder }) {
 // ── Urdu subtitle — real Urdu script, Jameel Khushkhati font ────────────────
 export function Sub({ children }) {
   if (!children) return null;
-  return <span className="urdu" style={{ display:'block', width:'100%', textAlign:'right', fontSize:15.5, lineHeight:1.65, color:'var(--n500)', marginTop:3 }}>{children}</span>;
+  return <span className="urdu" style={{ display:'block', width:'100%', textAlign:'right', fontSize:15, lineHeight:1.65, color:'var(--n500)', marginTop:3 }}>{children}</span>;
 }
 
 // ── Label with English + Urdu stacked ────────────────────────────────────────
@@ -260,7 +260,7 @@ export function BigBtn({ en, ur, icon: Icon, onClick, variant = 'primary', style
         {ur && (
           <span className="urdu" style={{
             color: variant === 'ghost' ? 'var(--n500)' : 'rgba(255,255,255,0.92)',
-            fontSize: 15.5, textAlign: 'right', lineHeight: 1.55,
+            fontSize: 15, textAlign: 'right', lineHeight: 1.6,
           }}>{ur}</span>
         )}
       </div>

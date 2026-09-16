@@ -74,7 +74,7 @@ function SHome({ user, stats, goQR, goFees }) {
           <div onClick={goFees} style={{ background: feeStatus==='pending' ? 'linear-gradient(135deg,#92400E,#D97706)' : 'linear-gradient(135deg,#991B1B,#E5412A)', borderRadius:'var(--r-lg)', padding:'16px 18px', cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'space-between', boxShadow:'0 4px 16px rgba(229,65,42,0.25)' }}>
             <div style={{ flex:1, minWidth:0, paddingRight:12 }}>
               <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', gap:8, flexWrap:'wrap' }}>
-                <span style={{ color:'white', fontSize:14.5, fontWeight:700 }}>
+                <span style={{ color:'white', fontSize:15, fontWeight:700 }}>
                   {feeStatus==='pending' ? 'Fee is being checked' : `Fee Due — ₹${settings.monthlyAmount || 500}`}
                 </span>
                 <span className="urdu" style={{ color:'rgba(255,255,255,0.92)', fontSize:15, textAlign:'right', lineHeight:1.6 }}>
@@ -99,7 +99,7 @@ function SHome({ user, stats, goQR, goFees }) {
           <div style={{ flex:1, minWidth:0, paddingRight:12 }}>
             <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', gap:8, flexWrap:'wrap' }}>
               <span style={{ color:'white', fontSize:16, fontWeight:700, letterSpacing:-0.2 }}>Show My QR Code</span>
-              <span className="urdu" style={{ color:'rgba(255,255,255,0.9)', fontSize:15.5, textAlign:'right', lineHeight:1.6 }}>QR کوڈ دکھائیں</span>
+              <span className="urdu" style={{ color:'rgba(255,255,255,0.9)', fontSize:15, textAlign:'right', lineHeight:1.6 }}>QR کوڈ دکھائیں</span>
             </div>
           </div>
           <div style={{ background:'rgba(255,255,255,0.14)', borderRadius:12, padding:12, flexShrink:0 }}>
@@ -110,7 +110,7 @@ function SHome({ user, stats, goQR, goFees }) {
         {/* Recent attendance — just last 5, no extra cards */}
         <Card>
           <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:12 }}>
-            <p style={{ fontSize:13.5, fontWeight:700, color:'var(--n700)', margin:0 }}>Recent Attendance</p>
+            <p style={{ fontSize:14, fontWeight:700, color:'var(--n700)', margin:0 }}>Recent Attendance</p>
             <span className="urdu" style={{ textAlign:'right', fontSize:15, lineHeight:1.6, color:'var(--n500)' }}>پچھلی حاضری</span>
           </div>
           {history.length===0
@@ -232,7 +232,7 @@ function SQR({ user }) {
               <p className="urdu" style={{ fontSize:15, color:'var(--n500)', margin:'4px 0 0', display:'block', textAlign:'right', lineHeight:1.85 }}>مدرسے میں فون نہیں لے جا سکتے؟</p>
             </div>
           </div>
-          <p style={{ fontSize:12.5, color:'var(--n600)', margin:'10px 0 0', lineHeight:1.7 }}>
+          <p style={{ fontSize:13, color:'var(--n600)', margin:'10px 0 0', lineHeight:1.7 }}>
             Print this card, cut it out, and bring it every day instead. Show it to Maulana to mark attendance.
           </p>
         </Card>
@@ -325,7 +325,7 @@ function SFees({ user, refresh }) {
 
         {feeState==='pending' && (
           <Card style={{ background:'#FFFBEB', border:'1px solid #FDE68A' }}>
-            <p style={{ fontSize:12.5, color:'#92400E', margin:0, lineHeight:1.6 }}>
+            <p style={{ fontSize:13, color:'#92400E', margin:0, lineHeight:1.6 }}>
               Your payment is being checked by Maulana. It usually takes a few hours.
               {rec?.txnId && <><br/>Your code: <strong style={{ fontFamily:'monospace' }}>{rec.txnId}</strong></>}
             </p>
@@ -335,7 +335,7 @@ function SFees({ user, refresh }) {
         {/* History — compact with receipt download */}
         <div>
           <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', margin:'0 0 10px' }}>
-            <p style={{ fontSize:13.5, fontWeight:700, color:'var(--n700)', margin:0 }}>Payment History</p>
+            <p style={{ fontSize:14, fontWeight:700, color:'var(--n700)', margin:0 }}>Payment History</p>
             <span className="urdu" style={{ fontSize:15, color:'var(--n500)', textAlign:'right', lineHeight:1.6 }}>پہلے کا حساب</span>
           </div>
           {history.length===0
@@ -349,7 +349,7 @@ function SFees({ user, refresh }) {
                     <s.Icon size={19} color={s.iconColor} strokeWidth={2}/>
                   </div>
                   <div style={{ flex:1, minWidth:0 }}>
-                    <p style={{ fontSize:13.5, fontWeight:600, color:'var(--n900)', margin:0 }}>{fmtMonth(m)}</p>
+                    <p style={{ fontSize:14, fontWeight:600, color:'var(--n900)', margin:0 }}>{fmtMonth(m)}</p>
                     <p style={{ fontSize:11, color:'var(--n400)', margin:'2px 0 0' }}>{r.method==='cash'?'Cash':'Online'}</p>
                   </div>
                   <div style={{ display:'flex', alignItems:'center', gap:8 }}>
@@ -357,7 +357,7 @@ function SFees({ user, refresh }) {
                       onClick={() => setReceiptData({ student: user, monthKey: m, record: r, amount: r.amount || amount })}
                       style={{
                         padding:'5px 9px', borderRadius:7, border:'1px solid var(--n200)',
-                        background:'var(--n50)', color:'var(--n700)', fontSize:11.5, fontWeight:600,
+                        background:'var(--n50)', color:'var(--n700)', fontSize:12, fontWeight:600,
                         cursor:'pointer', fontFamily:'inherit', display:'flex', alignItems:'center', gap:4
                       }}
                       title="View & Share Receipt"
@@ -406,7 +406,39 @@ function SFees({ user, refresh }) {
 }
 
 
-// ── Resize image before storing (keeps localStorage safe) ────────────────────
+// ── UPI QR Code component — fetches real scannable QR from free API ───────────
+function UpiQR({ upiId, upiName, amount, monthKey, userName }) {
+  const [failed, setFailed] = React.useState(false);
+  const payload = 'upi://pay?pa=' + upiId
+    + '&pn=' + encodeURIComponent(upiName)
+    + '&am=' + Number(amount).toFixed(2)
+    + '&cu=INR'
+    + '&tn=' + encodeURIComponent('Fees ' + fmtMonth(monthKey) + ' - ' + userName);
+  const src = 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&qzone=1&margin=0&format=png&data=' + encodeURIComponent(payload);
+
+  if (failed) {
+    return (
+      <div style={{ width:180, height:180, display:'flex', alignItems:'center', justifyContent:'center', flexDirection:'column', gap:8, background:'var(--n50)', borderRadius:8 }}>
+        <QrCode size={48} color="var(--g400)" strokeWidth={1.5}/>
+        <p style={{ fontSize:11, color:'var(--n500)', textAlign:'center', margin:0, padding:'0 8px', lineHeight:1.5 }}>
+          Use UPI ID below<br/>to pay manually
+        </p>
+      </div>
+    );
+  }
+  return (
+    <img
+      src={src}
+      alt="UPI QR Code — Scan with any UPI app"
+      width={180}
+      height={180}
+      style={{ display:'block', borderRadius:6 }}
+      onError={() => setFailed(true)}
+    />
+  );
+}
+
+// ── Resize image before storing (keeps localStorage safe) ─────────────────────
 function resizeImage(file, maxW = 800, quality = 0.72) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -587,7 +619,7 @@ function PaymentModal({ user, monthKey, amount, settings, onClose, onPaid }) {
         {/* Header */}
         <div style={{ padding:'0 20px 14px', borderBottom:'1px solid var(--n100)', display:'flex', justifyContent:'space-between', alignItems:'center' }}>
           <div>
-            <h3 style={{ fontSize:16.5, fontWeight:700, color:'var(--n900)', margin:0 }}>
+            <h3 style={{ fontSize:17, fontWeight:700, color:'var(--n900)', margin:0 }}>
               {step==='choose' ? 'Pay Fees' : 'Confirm Payment'}
             </h3>
             <span className="urdu" style={{textAlign:'right',display:'block',width:'100%',fontSize:15,lineHeight:1.8,color:'rgba(255,255,255,0.7)',marginTop:2}}>{step==='choose' ? 'ابھی فیس ادا کریں' : 'بھیج دیں'}</span>
@@ -601,6 +633,7 @@ function PaymentModal({ user, monthKey, amount, settings, onClose, onPaid }) {
 
           {/* ── Step 1: Choose payment method ── */}
           {step==='choose' && <>
+            {/* Amount banner */}
             <div style={{ background:'linear-gradient(135deg,#0a3d20,#1D9E75)', borderRadius:'var(--r-lg)', padding:'18px 20px', display:'flex', alignItems:'center', justifyContent:'space-between' }}>
               <div>
                 <span style={{ color:'rgba(255,255,255,0.75)', fontSize:12, fontWeight:600 }}>Total Due</span>
@@ -609,49 +642,57 @@ function PaymentModal({ user, monthKey, amount, settings, onClose, onPaid }) {
               <span className="urdu" style={{ color:'rgba(255,255,255,0.92)', fontSize:17, textAlign:'right', lineHeight:1.5 }}>فیس باقی ہے</span>
             </div>
 
+            {/* ── Real UPI QR Code to scan with any app ── */}
+            <div style={{ background:'white', border:'2px solid var(--g100)', borderRadius:'var(--r-lg)', padding:'18px 16px', display:'flex', flexDirection:'column', alignItems:'center', gap:10, boxShadow:'var(--shadow-sm)' }}>
+              <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', width:'100%', marginBottom:2 }}>
+                <div>
+                  <p style={{ fontSize:13, fontWeight:700, color:'var(--n700)', margin:0 }}>Scan &amp; Pay via UPI</p>
+                  <p style={{ fontSize:11, color:'var(--n400)', margin:'2px 0 0' }}>Works with any UPI app</p>
+                </div>
+                <span className="urdu" style={{ fontSize:15, color:'var(--n500)', textAlign:'right', lineHeight:1.6 }}>کیو آر اسکین کریں</span>
+              </div>
+
+              {/* QR image — real BHIM UPI QR, generated by free QR API */}
+              <div style={{ background:'white', padding:8, borderRadius:12, border:'1.5px solid var(--n200)', display:'flex', alignItems:'center', justifyContent:'center' }}>
+                <UpiQR upiId={upiId} upiName={upiName} amount={amount} monthKey={monthKey} userName={user.name}/>
+              </div>
+
+              {/* UPI ID below QR */}
+              <div style={{ width:'100%', background:'var(--g50)', border:'1px solid var(--g100)', borderRadius:'var(--r-sm)', padding:'10px 14px', display:'flex', alignItems:'center', justifyContent:'space-between' }}>
+                <div style={{ minWidth:0 }}>
+                  <p style={{ fontSize:10, color:'var(--g500)', fontWeight:600, margin:'0 0 2px', textTransform:'uppercase', letterSpacing:0.5 }}>UPI ID</p>
+                  <span style={{ fontFamily:'monospace', fontSize:14, fontWeight:700, color:'var(--g500)' }}>{upiId}</span>
+                </div>
+                <button onClick={copyUPI} style={{ display:'flex', alignItems:'center', gap:5, background:'white', border:'1px solid var(--g100)', borderRadius:7, padding:'6px 10px', cursor:'pointer', fontSize:12, fontWeight:600, color:'var(--g500)', fontFamily:'inherit', flexShrink:0 }}>
+                  {copied ? <><Check size={13}/> Copied!</> : <><Copy size={13}/> Copy</>}
+                </button>
+              </div>
+              <p style={{ fontSize:11, color:'var(--n400)', margin:'-4px 0 0', textAlign:'center' }}>MADARSA NURUL ULOOM TRUST — BHIM UPI</p>
+            </div>
+
+            {/* ── OR: Open directly in a UPI App ── */}
             <div>
               <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:10 }}>
-                <p style={{ fontSize:12.5, fontWeight:700, color:'var(--n600)', margin:0 }}>Choose UPI App</p>
-                <span className="urdu" style={{ textAlign:'right', fontSize:15, lineHeight:1.6, color:'var(--n500)' }}>ایپ چنیں</span>
+                <p style={{ fontSize:13, fontWeight:700, color:'var(--n600)', margin:0 }}>Or open directly in app</p>
+                <span className="urdu" style={{ textAlign:'right', fontSize:15, lineHeight:1.6, color:'var(--n500)' }}>ایپ کھولیں</span>
               </div>
               <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:10 }}>
                 {UPI_APPS.map(app => (
                   <button key={app.id} onClick={() => openUPI(app)}
-                    style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:8, padding:'18px 10px', background:'white', border:'1.5px solid var(--n200)', borderRadius:'var(--r)', cursor:'pointer', textAlign:'center', fontFamily:'inherit', transition:'all .15s', position:'relative' }}
+                    style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:8, padding:'14px 10px', background:'white', border:'1.5px solid var(--n200)', borderRadius:'var(--r)', cursor:'pointer', textAlign:'center', fontFamily:'inherit', transition:'all .15s', position:'relative' }}
                     onMouseEnter={e => { e.currentTarget.style.borderColor=app.color; e.currentTarget.style.transform='translateY(-1px)'; e.currentTarget.style.boxShadow=`0 4px 16px ${app.color}28`; }}
                     onMouseLeave={e => { e.currentTarget.style.borderColor='var(--n200)'; e.currentTarget.style.transform='none'; e.currentTarget.style.boxShadow='none'; }}>
-                    <div style={{ width:46, height:46, borderRadius:14, background:`${app.color}15`, display:'flex', alignItems:'center', justifyContent:'center' }}>
-                      <Smartphone size={22} color={app.color} strokeWidth={2}/>
+                    <div style={{ width:40, height:40, borderRadius:12, background:`${app.color}15`, display:'flex', alignItems:'center', justifyContent:'center' }}>
+                      <Smartphone size={20} color={app.color} strokeWidth={2}/>
                     </div>
-                    <div>
-                      <p style={{ fontSize:13, fontWeight:700, color:'var(--n900)', margin:'0 0 3px' }}>{app.label}</p>
-                      <div style={{ background:`${app.color}15`, borderRadius:20, padding:'2px 10px', display:'inline-block' }}>
-                        <span style={{ fontSize:11.5, fontWeight:700, color:app.color }}>₹{Number(amount).toLocaleString()}</span>
-                      </div>
-                    </div>
+                    <p style={{ fontSize:12, fontWeight:700, color:'var(--n900)', margin:0 }}>{app.label}</p>
                   </button>
                 ))}
-              </div>
-              <p style={{ fontSize:11.5, color:'var(--n500)', margin:'4px 0 0', textAlign:'center', lineHeight:1.6 }}>
-                Tap to open the app — amount and UPI ID will be filled automatically
-              </p>
-            </div>
-
-            <div style={{ background:'var(--n50)', borderRadius:'var(--r)', padding:'14px 16px' }}>
-              <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:8 }}>
-                <p style={{ fontSize:11.5, color:'var(--n500)', margin:0, fontWeight:600 }}>Or pay directly to UPI ID</p>
-                <span className="urdu" style={{ textAlign:'right', fontSize:15, lineHeight:1.6, color:'var(--n500)' }}>یا سیدھا UPI ID پر بھیجیں</span>
-              </div>
-              <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', background:'white', border:'1.5px solid var(--n200)', borderRadius:'var(--r-sm)', padding:'11px 14px' }}>
-                <span style={{ fontFamily:'monospace', fontSize:14.5, fontWeight:700, color:'var(--g400)' }}>{upiId}</span>
-                <button onClick={copyUPI} style={{ display:'flex', alignItems:'center', gap:5, background:'var(--g50)', border:'1px solid var(--g100)', borderRadius:7, padding:'5px 10px', cursor:'pointer', fontSize:12, fontWeight:600, color:'var(--g500)', fontFamily:'inherit' }}>
-                  {copied ? <><Check size={13}/> Copied!</> : <><Copy size={13}/> Copy</>}
-                </button>
               </div>
             </div>
 
             <button onClick={() => setStep('upi')}
-              style={{ width:'100%', padding:'13px', borderRadius:'var(--r-sm)', border:'1.5px solid var(--n200)', background:'transparent', color:'var(--n700)', fontWeight:600, fontSize:13.5, cursor:'pointer', fontFamily:'inherit' }}>
+              style={{ width:'100%', padding:'13px', borderRadius:'var(--r-sm)', border:'1.5px solid var(--n200)', background:'transparent', color:'var(--n700)', fontWeight:600, fontSize:14, cursor:'pointer', fontFamily:'inherit' }}>
               Already Paid? Submit Proof
             </button>
           </>}
@@ -669,11 +710,11 @@ function PaymentModal({ user, monthKey, amount, settings, onClose, onPaid }) {
                   <p style={{ fontSize:14, fontWeight:700, color:'var(--n900)', margin:0 }}>Paid via {usedApp.label}?</p>
                 </div>
               ) : null}
-              <p style={{ fontSize:12.5, color:'var(--n700)', margin:0, lineHeight:1.7, fontWeight:500 }}>
+              <p style={{ fontSize:13, color:'var(--n700)', margin:0, lineHeight:1.7, fontWeight:500 }}>
                 {usedApp ? usedApp.utrHelp : "Open your UPI app → payment history → find this payment → copy the UTR / Reference ID"}
               </p>
               {usedApp?.utrHelpUr && (
-                <span className="urdu" style={{ display:'block', marginTop:8, textAlign:'right', fontSize:14.5, lineHeight:1.8, color:'var(--n500)' }}>{usedApp.utrHelpUr}</span>
+                <span className="urdu" style={{ display:'block', marginTop:8, textAlign:'right', fontSize:15, lineHeight:1.8, color:'var(--n500)' }}>{usedApp.utrHelpUr}</span>
               )}
             </div>
 
@@ -741,13 +782,13 @@ function PaymentModal({ user, monthKey, amount, settings, onClose, onPaid }) {
             {err && <p style={{ fontSize:13, color:'var(--danger)', margin:'-6px 0 0', fontWeight:500 }}>{err}</p>}
 
             <button onClick={confirmPayment}
-              style={{ width:'100%', padding:'14px', borderRadius:'var(--r-sm)', border:'none', background:'var(--g400)', color:'white', fontWeight:700, fontSize:14.5, cursor:'pointer', fontFamily:'inherit', boxShadow:'var(--shadow-green)' }}>
+              style={{ width:'100%', padding:'14px', borderRadius:'var(--r-sm)', border:'none', background:'var(--g400)', color:'white', fontWeight:700, fontSize:15, cursor:'pointer', fontFamily:'inherit', boxShadow:'var(--shadow-green)' }}>
               Submit for Verification
             </button>
             <span className="urdu" style={{ textAlign:'right', display:'block', width:'100%', marginTop:-4, marginBottom:4, fontSize:15, lineHeight:1.8, color:'var(--n500)' }}>بھیج دیں</span>
 
             <button onClick={() => { setStep('choose'); setErr(''); }}
-              style={{ width:'100%', padding:'13px', borderRadius:'var(--r-sm)', border:'1.5px solid var(--n200)', background:'transparent', color:'var(--n600)', fontWeight:600, fontSize:13.5, cursor:'pointer', fontFamily:'inherit' }}>
+              style={{ width:'100%', padding:'13px', borderRadius:'var(--r-sm)', border:'1.5px solid var(--n200)', background:'transparent', color:'var(--n600)', fontWeight:600, fontSize:14, cursor:'pointer', fontFamily:'inherit' }}>
               Back
             </button>
           </>}

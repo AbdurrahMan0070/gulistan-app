@@ -329,7 +329,7 @@ _Official receipt from Noorul-Uloom Trust · Gulistan_`
 
             {/* Status & Date */}
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', margin: '12px 0 10px' }}>
-              <span style={{ fontSize: 11.5, color: 'var(--n500)' }}>{dateStr}</span>
+              <span style={{ fontSize: 12, color: 'var(--n500)' }}>{dateStr}</span>
               <div style={{
                 display: 'flex', alignItems: 'center', gap: 4,
                 background: isPaid ? '#EDF9F4' : '#FFFBEB',
@@ -347,7 +347,7 @@ _Official receipt from Noorul-Uloom Trust · Gulistan_`
             <div style={{ background: 'var(--n50)', borderRadius: '10px', padding: '10px 12px', marginBottom: '12px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '6px' }}>
                 <span style={{ fontSize: 12, color: 'var(--n500)' }}>Student / طالب علم:</span>
-                <span style={{ fontSize: 12.5, fontWeight: 700, color: 'var(--n900)' }}>{student?.name}</span>
+                <span style={{ fontSize: 13, fontWeight: 700, color: 'var(--n900)' }}>{student?.name}</span>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '6px' }}>
                 <span style={{ fontSize: 12, color: 'var(--n500)' }}>Student ID:</span>
@@ -359,7 +359,7 @@ _Official receipt from Noorul-Uloom Trust · Gulistan_`
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '6px' }}>
                 <span style={{ fontSize: 12, color: 'var(--n500)' }}>Fee Month / مہینہ:</span>
-                <span style={{ fontSize: 12.5, fontWeight: 700, color: 'var(--g500)' }}>{monthName}</span>
+                <span style={{ fontSize: 13, fontWeight: 700, color: 'var(--g500)' }}>{monthName}</span>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '6px' }}>
                 <span style={{ fontSize: 12, color: 'var(--n500)' }}>Mode / طریقہ:</span>
@@ -384,7 +384,7 @@ _Official receipt from Noorul-Uloom Trust · Gulistan_`
                   ₹{Number(record?.amount || amount).toLocaleString()}
                 </p>
               </div>
-              <span className="urdu" style={{ fontSize: 16.5, color: 'rgba(255,255,255,0.95)', textAlign: 'right', lineHeight: 1.6 }}>
+              <span className="urdu" style={{ fontSize: 17, color: 'rgba(255,255,255,0.95)', textAlign: 'right', lineHeight: 1.6 }}>
                 مکمل ادائیگی
               </span>
             </div>
@@ -393,13 +393,13 @@ _Official receipt from Noorul-Uloom Trust · Gulistan_`
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginTop: '14px', paddingTop: '10px', borderTop: '1px dashed var(--n200)' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                 <ShieldCheck size={18} color="var(--g400)"/>
-                <span style={{ fontSize: 10.5, color: 'var(--n500)', lineHeight: 1.3 }}>
+                <span style={{ fontSize: 11, color: 'var(--n500)', lineHeight: 1.3 }}>
                   Verified by<br/>Office Noorul-Uloom
                 </span>
               </div>
               <div style={{ textAlign: 'right' }}>
                 <p style={{ fontSize: 11, fontWeight: 700, color: 'var(--n700)', margin: 0 }}>Authorized Signatory</p>
-                <p className="urdu" style={{ fontSize: 14.5, color: 'var(--n500)', margin: '1px 0 0', textAlign: 'right', lineHeight: 1.6 }}>مولانا / دفتر</p>
+                <p className="urdu" style={{ fontSize: 15, color: 'var(--n500)', margin: '1px 0 0', textAlign: 'right', lineHeight: 1.6 }}>مولانا / دفتر</p>
               </div>
             </div>
           </div>
@@ -414,7 +414,7 @@ _Official receipt from Noorul-Uloom Trust · Gulistan_`
             onClick={handleShareWhatsApp}
             style={{
               width: '100%', padding: '14px 18px', borderRadius: 'var(--r-sm)', border: 'none',
-              background: '#25D366', color: 'white', fontWeight: 700, fontSize: 14.5,
+              background: '#25D366', color: 'white', fontWeight: 700, fontSize: 15,
               cursor: 'pointer', fontFamily: 'inherit', display: 'flex', alignItems: 'center',
               justifyContent: 'center', gap: 9, boxShadow: '0 4px 14px rgba(37, 211, 102, 0.3)'
             }}
@@ -433,7 +433,7 @@ _Official receipt from Noorul-Uloom Trust · Gulistan_`
               disabled={downloading}
               style={{
                 flex: 1, padding: '12px 14px', borderRadius: 'var(--r-sm)', border: '1.5px solid var(--g400)',
-                background: 'var(--g50)', color: 'var(--g500)', fontWeight: 700, fontSize: 13.5,
+                background: 'var(--g50)', color: 'var(--g500)', fontWeight: 700, fontSize: 14,
                 cursor: 'pointer', fontFamily: 'inherit', display: 'flex', alignItems: 'center',
                 justifyContent: 'center', gap: 7
               }}
