@@ -279,13 +279,27 @@ function TFees({ toast_, refresh: parentRefresh }) {
   };
 
   const handleMarkCash = (studentId) => {
-    teacherMarkFee(month, studentId, { status:'paid', method:'cash', amount, paidAt:new Date().toISOString(), markedByTeacher:true });
+    teacherMarkFee(month, studentId, {
+      status: 'paid',
+      method: 'cash',
+      amount,
+      paidAt: new Date().toISOString(),
+      markedByTeacher: true,
+      verifiedByTeacherId: user.id,
+      verifiedByTeacherName: user.name,
+    });
     toast_('Marked as paid');
     re();
   };
   const handleVerify = (studentId) => {
     const existing = monthFees[studentId] || {};
-    teacherMarkFee(month, studentId, { ...existing, status:'paid', paidAt: existing.paidAt || new Date().toISOString() });
+    teacherMarkFee(month, studentId, {
+      ...existing,
+      status: 'paid',
+      paidAt: existing.paidAt || new Date().toISOString(),
+      verifiedByTeacherId: user.id,
+      verifiedByTeacherName: user.name,
+    });
     toast_('Payment confirmed');
     re();
   };

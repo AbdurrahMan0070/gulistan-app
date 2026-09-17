@@ -1,5 +1,5 @@
 // ─── Database Layer ────────────────────────────────────────────────────────────
-import { hashPasswordSync, verifyPasswordSync } from './crypto';
+import { hashPasswordSync, verifyPasswordSync, generateReceiptSecurityCode, sanitizeInput, sanitizeTxnId } from './crypto';
 
 const SyncDB = {
   get(key) {
@@ -57,8 +57,11 @@ export const addStudent = (data) => {
     role: 'student',
     joinDate: todayStr(),
     ...data,
-    name: data.name.trim(),
-    email: data.email.trim().toLowerCase(),
+    name: sanitizeInput(data.name || '').trim(),
+    email: (data.email || '').trim().toLowerCase(),
+    phone: sanitizeInput(data.phone || ''),
+    guardianName: sanitizeInput(data.guardianName || ''),
+    class: sanitizeInput(data.class || 'General'),
     password: hashPasswordSync(data.password),
   };
   saveStudents([...getStudents(), student]);
@@ -73,11 +76,12 @@ export const addTeacher = (data) => {
   const teacher = {
     id: uid(),
     role: 'teacher',
-    approved: false, // NEW: must be approved by first teacher / admin
+    approved: false, // must be approved by first teacher / admin unless explicitly set
     joinDate: todayStr(),
     ...data,
-    name: data.name.trim(),
-    email: data.email.trim().toLowerCase(),
+    name: sanitizeInput(data.name || '').trim(),
+    email: (data.email || '').trim().toLowerCase(),
+    phone: sanitizeInput(data.phone || ''),
     password: hashPasswordSync(data.password),
   };
   saveTeachers([...getTeachers(), teacher]);
@@ -221,7 +225,15 @@ export const getFeeSettings = () => {
   }
   return s;
 };
-export const saveFeeSettings = (s) => SyncDB.set('gul_fee_settings', s);
+export const saveFeeSettings = (s) => {
+  const sanitized = {
+    monthlyAmount: Math.max(1, Number(s.monthlyAmount) || 200),
+    upiId: sanitizeInput(s.upiId || '9820700711m@pnb'),
+    upiName: sanitizeInput(s.upiName || 'MADARSA NURUL ULOOM TRUST'),
+    currency: 'INR',
+  };
+  return SyncDB.set('gul_fee_settings', sanitized);
+};
 
 export const currentMonthKey = () => {
   const d = new Date();
@@ -242,35 +254,99 @@ export const last12Months = () => Array.from({ length: 12 }, (_, i) => {
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
 });
 
-// Teacher: mark cash or verify online payment
+// Teacher: mark cash or verify online payment with audit trail & security hash
 export const teacherMarkFee = (monthKey, studentId, payload) => {
   const fees = getFees();
   fees[monthKey] = fees[monthKey] || {};
-  fees[monthKey][studentId] = {
-    ...fees[monthKey][studentId],
+  const existing = fees[monthKey][studentId] || {};
+  const finalPayload = {
+    ...existing,
     ...payload,
     updatedAt: new Date().toISOString(),
   };
+
+  // Attach tamper-proof security hash if marking paid
+  if (finalPayload.status === 'paid' && !finalPayload.securityHash) {
+    finalPayload.securityHash = generateReceiptSecurityCode({
+      studentId,
+      monthKey,
+      txnId: finalPayload.txnId || 'CASH',
+      amount: finalPayload.amount || 200,
+      timestamp: finalPayload.paidAt || finalPayload.updatedAt,
+    });
+  }
+
+  fees[monthKey][studentId] = finalPayload;
   saveFees(fees);
 };
 
-// Student: submit online payment for verification (pending)
+// Check for duplicate UPI transaction IDs / UTR across all students and months
+export const checkDuplicateTxnId = (txnId, currentMonthKey, currentStudentId) => {
+  const clean = sanitizeTxnId(txnId);
+  if (!clean) return { duplicate: false };
+  const fees = getFees();
+  for (const [mKey, records] of Object.entries(fees)) {
+    for (const [sId, rec] of Object.entries(records)) {
+      // Exclude if it's the current student's existing record for this exact month (e.g. resubmitting)
+      if (mKey === currentMonthKey && sId === currentStudentId) continue;
+      if (rec?.txnId && sanitizeTxnId(rec.txnId) === clean) {
+        return {
+          duplicate: true,
+          status: rec.status,
+          month: mKey,
+          studentId: sId,
+        };
+      }
+    }
+  }
+  return { duplicate: false };
+};
+
+// Student: submit online payment for verification with fraud checks & tamper-evident signature
 export const studentSubmitPayment = (monthKey, studentId, txnId, amount, screenshotDataUrl = null) => {
+  const cleanTxnId = sanitizeTxnId(txnId);
+  if (!cleanTxnId || cleanTxnId.length < 8 || cleanTxnId.length > 28) {
+    return { ok: false, error: 'Invalid UPI Transaction Code / UTR. Must be 8–28 letters or numbers.' };
+  }
+
+  // Prevent duplicate UTR submission across the system
+  const dup = checkDuplicateTxnId(cleanTxnId, monthKey, studentId);
+  if (dup.duplicate) {
+    return {
+      ok: false,
+      error: `This Transaction ID (${cleanTxnId}) was already recorded for ${fmtMonth(dup.month)}. Please enter the unique UPI UTR from your payment app.`
+    };
+  }
+
   const fees = getFees();
   fees[monthKey] = fees[monthKey] || {};
   // Only allow if not already paid
-  if (fees[monthKey][studentId]?.status === 'paid') return false;
+  if (fees[monthKey][studentId]?.status === 'paid') {
+    return { ok: false, error: 'Fee for this month is already marked as Paid.' };
+  }
+
+  const finalAmount = Number(amount) > 0 ? Number(amount) : (getFeeSettings().monthlyAmount || 200);
+  const now = new Date().toISOString();
+  const securityHash = generateReceiptSecurityCode({
+    studentId,
+    monthKey,
+    txnId: cleanTxnId,
+    amount: finalAmount,
+    timestamp: now,
+  });
+
   fees[monthKey][studentId] = {
     status: 'pending',
     method: 'online',
-    txnId: txnId.trim().toUpperCase(),
-    amount,
+    txnId: cleanTxnId,
+    amount: finalAmount,
     // Store screenshot as data URL (base64). Kept small by resizing before upload.
     screenshot: screenshotDataUrl || null,
-    submittedAt: new Date().toISOString(),
+    submittedAt: now,
+    securityHash,
   };
   saveFees(fees);
-  return true;
+  return { ok: true, securityHash };
 };
 
 export const getMonthFeeRecord = (monthKey, studentId) =>

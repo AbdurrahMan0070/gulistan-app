@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './index.css';
-import { getUser, saveUser } from './utils/db';
+import { getUser, saveUser, getStudents, getTeachers } from './utils/db';
 import { SplashScreen, WelcomeScreen, LoginScreen, RegisterScreen } from './screens/AuthScreens';
 import { StudentApp } from './screens/StudentApp';
 import { TeacherApp } from './screens/TeacherApp';
@@ -13,9 +13,17 @@ export default function App() {
 
   useEffect(() => {
     const saved = getUser();
-    if (saved) {
-      setUser(saved);
-      setPhase('app');
+    if (saved && saved.id) {
+      // Verify stored session against database to prevent spoofing or stale unauthorized logins
+      const all = [...getStudents(), ...getTeachers()];
+      const verified = all.find(u => u.id === saved.id && u.role === saved.role);
+      if (verified && (verified.role !== 'teacher' || verified.approved)) {
+        setUser(verified);
+        setPhase('app');
+      } else {
+        saveUser(null);
+        setTimeout(() => setPhase('welcome'), 1200);
+      }
     } else {
       setTimeout(() => setPhase('welcome'), 2400);
     }

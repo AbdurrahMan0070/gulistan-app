@@ -574,36 +574,52 @@ function PaymentModal({ user, monthKey, amount, settings, onClose, onPaid }) {
   const handleFile = async (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    if (!file.type.startsWith('image/')) { setErr('Please select an image file'); return; }
+
+    // Strict file type & size security validation
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
+    if (!allowedTypes.includes(file.type)) {
+      setErr('Please select a valid image file (JPG, PNG, or WebP)');
+      return;
+    }
+    if (file.size > 10 * 1024 * 1024) {
+      setErr('Image file too large. Maximum size is 10 MB');
+      return;
+    }
+
     setUploading(true);
     try {
       const resized = await resizeImage(file);
       setScreenshot(resized);
       setErr('');
-    } catch { setErr('Could not read image. Try again.'); }
+    } catch {
+      setErr('Could not process image safely. Please choose another image.');
+    }
     setUploading(false);
   };
 
   const confirmPayment = () => {
-    if (!txnId.trim() || txnId.trim().length < 6) {
-      setErr('Please enter the payment code from your UPI app');
+    const clean = txnId.trim().toUpperCase().replace(/[^A-Z0-9]/g, '');
+    if (!clean || clean.length < 8) {
+      setErr('Please enter a valid UPI Reference / UTR Code (at least 8 characters)');
       return;
     }
     if (!screenshot) {
-      setErr('Please upload a screenshot of your payment');
+      setErr('Please upload a screenshot of your payment receipt');
       return;
     }
-    const ok = studentSubmitPayment(monthKey, user.id, txnId, amount, screenshot);
-    if (ok) {
+
+    const res = studentSubmitPayment(monthKey, user.id, clean, amount, screenshot);
+    if (res?.ok || res === true) {
       onPaid({
         status: 'pending',
         method: 'online',
-        txnId: txnId.trim().toUpperCase(),
+        txnId: clean,
         amount,
         submittedAt: new Date().toISOString(),
+        securityHash: res?.securityHash,
       });
     } else {
-      setErr('Already submitted for this month');
+      setErr(res?.error || 'Already submitted for this month');
     }
   };
 

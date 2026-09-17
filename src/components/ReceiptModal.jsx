@@ -1,5 +1,6 @@
 import React, { useRef, useState } from 'react';
-import { X, Download, Share2, Printer, CheckCircle2, Clock, ShieldCheck, BookOpen } from 'lucide-react';
+import { X, Download, Share2, Printer, CheckCircle2, Clock, ShieldCheck, BookOpen, Lock } from 'lucide-react';
+import { generateReceiptSecurityCode } from '../utils/crypto';
 
 function fmtMonthLong(monthKey) {
   if (!monthKey) return '';
@@ -31,6 +32,14 @@ export function ReceiptModal({ student, monthKey, record, amount = 200, onClose 
 
   const receiptNo = `REC-${(monthKey || '2026-09').replace('-', '')}-${(student?.id || '0000').slice(-4)}-${(txnId !== 'N/A' ? txnId : 'CASH').slice(-4)}`;
 
+  const securityCode = record?.securityHash || generateReceiptSecurityCode({
+    studentId: student?.id || '',
+    monthKey: monthKey || '',
+    txnId: txnId !== 'N/A' ? txnId : 'CASH',
+    amount: record?.amount || amount,
+    timestamp: record?.paidAt || record?.submittedAt || '',
+  });
+
   // ── Formatted WhatsApp Text ────────────────────────────────────────────────
   const getWhatsAppMessage = () => {
     return (
@@ -40,6 +49,7 @@ export function ReceiptModal({ student, monthKey, record, amount = 200, onClose 
 📜 *FEE RECEIPT / فیس رسید*
 ━━━━━━━━━━━━━━━━━━━━
 *Receipt No:* ${receiptNo}
+*Security Hash:* ${securityCode}
 *Date:* ${dateStr}
 *Student:* ${student?.name || 'Student'}
 *Student ID:* ${student?.id || 'N/A'}
@@ -149,6 +159,12 @@ _Official receipt from Noorul-Uloom Trust · Gulistan_`
       ctx.fillStyle = isPaid ? '#15803D' : '#D97706';
       ctx.font = 'bold 15px "Inter", sans-serif';
       ctx.fillText(`${statusLabel} (${statusUrdu})`, 200, 335);
+
+      // Security Verification Seal
+      ctx.fillStyle = '#0a3d20';
+      ctx.font = 'bold 11px monospace';
+      ctx.textAlign = 'center';
+      ctx.fillText(`TAMPER-PROOF VERIFICATION HASH: ${securityCode}`, width / 2, 362);
 
       // Table Header
       ctx.fillStyle = '#0a3d20';
@@ -323,6 +339,16 @@ _Official receipt from Noorul-Uloom Trust · Gulistan_`
               }}>
                 <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--g500)' }}>
                   OFFICIAL RECEIPT · {receiptNo}
+                </span>
+              </div>
+              <div style={{
+                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 5,
+                background: 'rgba(29, 158, 117, 0.08)', border: '1px solid rgba(29, 158, 117, 0.25)',
+                borderRadius: '6px', padding: '3px 8px', marginTop: '4px'
+              }}>
+                <ShieldCheck size={12} color="var(--g500)"/>
+                <span style={{ fontSize: 10, fontWeight: 700, fontFamily: 'monospace', color: 'var(--g500)', letterSpacing: 0.5 }}>
+                  SECURITY CODE: {securityCode}
                 </span>
               </div>
             </div>
