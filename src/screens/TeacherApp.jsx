@@ -258,7 +258,7 @@ function TFees({ toast_, refresh: parentRefresh }) {
 
   const students  = getStudents();
   const settings  = getFeeSettings();
-  const amount    = settings.monthlyAmount || 500;
+  const amount    = settings.monthlyAmount || 200;
   const fees      = getFees();
   const monthFees = fees[month] || {};
   const months    = last12Months();
@@ -450,9 +450,9 @@ function TFees({ toast_, refresh: parentRefresh }) {
 
 function FeeSettingsSheet({ onClose, toast_ }) {
   const s = getFeeSettings();
-  const [form, setForm] = useState({ monthlyAmount: s.monthlyAmount || 500, upiId: s.upiId || '', upiName: s.upiName || 'Noor Ulum Trust' });
+  const [form, setForm] = useState({ monthlyAmount: s.monthlyAmount || 200, upiId: s.upiId || '', upiName: s.upiName || 'Noor Ulum Trust' });
   const f = k => e => setForm(p => ({ ...p, [k]: e.target.value }));
-  const save = () => { saveFeeSettings({ ...s, ...form, monthlyAmount: Number(form.monthlyAmount) || 500 }); toast_('Saved'); onClose(); };
+  const save = () => { saveFeeSettings({ ...s, ...form, monthlyAmount: Number(form.monthlyAmount) || 200 }); toast_('Saved'); onClose(); };
 
   return (
     <div style={{ position:'fixed', inset:0, background:'rgba(10,20,12,0.75)', zIndex:3000, display:'flex', alignItems:'flex-end', backdropFilter:'blur(4px)' }}>

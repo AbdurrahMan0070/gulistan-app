@@ -75,7 +75,7 @@ function SHome({ user, stats, goQR, goFees }) {
             <div style={{ flex:1, minWidth:0, paddingRight:12 }}>
               <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', gap:8, flexWrap:'wrap' }}>
                 <span style={{ color:'white', fontSize:15, fontWeight:700 }}>
-                  {feeStatus==='pending' ? 'Fee is being checked' : `Fee Due — ₹${settings.monthlyAmount || 500}`}
+                  {feeStatus==='pending' ? 'Fee is being checked' : `Fee Due — ₹${settings.monthlyAmount || 200}`}
                 </span>
                 <span className="urdu" style={{ color:'rgba(255,255,255,0.92)', fontSize:15, textAlign:'right', lineHeight:1.6 }}>
                   {feeStatus==='pending' ? T.awaitingVerify : "فیس باقی ہے"}
@@ -253,7 +253,7 @@ function SFees({ user, refresh }) {
   const toast_ = (msg, type='success') => setToast({ msg, type });
 
   const settings = getFeeSettings();
-  const amount   = settings.monthlyAmount || 500;
+  const amount   = settings.monthlyAmount || 200;
   const rec      = getMonthFeeRecord(month, user.id);
   const history  = getStudentFeeHistory(user.id);
   const months   = last12Months();

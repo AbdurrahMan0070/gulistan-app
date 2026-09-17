@@ -205,11 +205,21 @@ export const parseQRValue = (v) => {
 export const getFees    = () => SyncDB.get('gul_fees') || {};
 export const saveFees   = (f) => SyncDB.set('gul_fees', f);
 
-export const getFeeSettings = () => SyncDB.get('gul_fee_settings') || {
-  monthlyAmount: 500,
-  upiId: '9820700711m@pnb',
-  upiName: 'MADARSA NURUL ULOOM TRUST',
-  currency: 'INR',
+export const getFeeSettings = () => {
+  const s = SyncDB.get('gul_fee_settings');
+  if (!s) {
+    return {
+      monthlyAmount: 200,
+      upiId: '9820700711m@pnb',
+      upiName: 'MADARSA NURUL ULOOM TRUST',
+      currency: 'INR',
+    };
+  }
+  // Auto-migrate legacy 500 default to 200
+  if (s.monthlyAmount === 500 || !s.monthlyAmount) {
+    s.monthlyAmount = 200;
+  }
+  return s;
 };
 export const saveFeeSettings = (s) => SyncDB.set('gul_fee_settings', s);
 
@@ -280,7 +290,7 @@ export const getMonthFeeStats = (monthKey) => {
   const paid    = students.filter(s => fees[s.id]?.status === 'paid').length;
   const pending = students.filter(s => fees[s.id]?.status === 'pending').length;
   const unpaid  = students.length - paid - pending;
-  const amount  = getFeeSettings().monthlyAmount || 500;
+  const amount  = getFeeSettings().monthlyAmount || 200;
   const collected = students
     .filter(s => fees[s.id]?.status === 'paid')
     .reduce((sum, s) => sum + (fees[s.id]?.amount || amount), 0);

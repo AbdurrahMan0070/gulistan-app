@@ -8,7 +8,7 @@ function fmtMonthLong(monthKey) {
   return date.toLocaleDateString('en-IN', { month: 'long', year: 'numeric' });
 }
 
-export function ReceiptModal({ student, monthKey, record, amount = 500, onClose }) {
+export function ReceiptModal({ student, monthKey, record, amount = 200, onClose }) {
   const receiptCardRef = useRef(null);
   const [downloading, setDownloading] = useState(false);
   const [copied, setCopied] = useState(false);
