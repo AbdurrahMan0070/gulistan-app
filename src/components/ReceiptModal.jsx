@@ -14,13 +14,23 @@ export function ReceiptModal({ student, monthKey, record, amount = 200, onClose 
   const [downloading, setDownloading] = useState(false);
   const [copied, setCopied] = useState(false);
 
-  const isPaid = record?.status === 'paid';
-  const isPending = record?.status === 'pending';
-  const monthName = fmtMonthLong(monthKey);
-  const txnId = record?.txnId || 'N/A';
-  const method = record?.method === 'cash' ? 'Cash / نقد' : 'UPI Online / آن لائن';
-  const statusLabel = isPaid ? 'Verified & Paid' : isPending ? 'Submitted (Pending Verification)' : 'Unpaid';
-  const statusUrdu = isPaid ? 'ادا شدہ' : isPending ? 'تصدیق کے لیے جمع' : 'غیر ادا شدہ';
+  const isPaid    = record?.status === 'paid';
+  const isPending  = record?.status === 'pending';
+  const monthName  = fmtMonthLong(monthKey);
+  const txnId      = record?.txnId || null;
+  const txnDisplay = txnId || 'N/A';
+  const methodLabel = record?.method === 'cash' ? 'Cash' : 'UPI / Online';
+  const methodUrdu  = record?.method === 'cash' ? 'نقد' : 'آن لائن یو پی آئی';
+
+  const statusLabel = isPaid    ? 'Verified ✔ Paid'
+                    : isPending  ? 'Submitted — Awaiting Verification'
+                    :              'Unpaid';
+  const statusUrdu  = isPaid    ? 'ادا شدہ ✔'
+                    : isPending  ? 'جمع — تصدیق باقی ہے'
+                    :              'ادا نہیں ہوئی';
+
+  // Use actual paid/submitted amount; fall back to settings amount
+  const displayAmount = Number(record?.amount || amount) || 200;
 
   const dateStr = record?.submittedAt || record?.updatedAt
     ? new Date(record.submittedAt || record.updatedAt).toLocaleDateString('en-IN', {
@@ -30,50 +40,64 @@ export function ReceiptModal({ student, monthKey, record, amount = 200, onClose 
         day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit'
       });
 
-  const receiptNo = `REC-${(monthKey || '2026-09').replace('-', '')}-${(student?.id || '0000').slice(-4)}-${(txnId !== 'N/A' ? txnId : 'CASH').slice(-4)}`;
+  const receiptNo = `REC-${(monthKey || '').replace('-', '')}-${(student?.id || '0000').slice(-4)}-${(txnId ? txnId : 'CASH').slice(-4)}`;
 
   const securityCode = record?.securityHash || generateReceiptSecurityCode({
-    studentId: student?.id || '',
-    monthKey: monthKey || '',
-    txnId: txnId !== 'N/A' ? txnId : 'CASH',
-    amount: record?.amount || amount,
-    timestamp: record?.paidAt || record?.submittedAt || '',
+    studentId:  student?.id || '',
+    monthKey:   monthKey || '',
+    txnId:      txnId || 'CASH',
+    amount:     displayAmount,
+    timestamp:  record?.paidAt || record?.submittedAt || '',
   });
 
-  // ── Formatted WhatsApp Text ────────────────────────────────────────────────
+  // Phone for direct WhatsApp delivery to student's registered number
+  const studentPhone = (student?.phone || '').replace(/[^0-9]/g, '');
+  const hasPhone     = studentPhone.length >= 10;
+
+  // ── Formatted WhatsApp Text (clean & professional) ─────────────────────────
   const getWhatsAppMessage = () => {
-    return (
-`*NOORUL-ULOOM TRUST — GULISTAN*
-*نور العلوم ٹرسٹ گلستان*
-━━━━━━━━━━━━━━━━━━━━
-📜 *FEE RECEIPT / فیس رسید*
-━━━━━━━━━━━━━━━━━━━━
-*Receipt No:* ${receiptNo}
-*Security Hash:* ${securityCode}
-*Date:* ${dateStr}
-*Student:* ${student?.name || 'Student'}
-*Student ID:* ${student?.id || 'N/A'}
-*Class:* ${student?.class || 'Madrasa Noorul-Uloom'}
-*Month:* ${monthName}
-*Amount:* ₹${Number(record?.amount || amount).toLocaleString()}
-*Payment Method:* ${method}
-*Transaction ID / Code:* ${txnId}
-*Status:* ${statusLabel} (${statusUrdu})
-━━━━━━━━━━━━━━━━━━━━
-جزاكم الله خيرا
-_Official receipt from Noorul-Uloom Trust · Gulistan_`
-    );
+    const paidLine  = isPaid    ? '✅ PAID — VERIFIED'
+                    : isPending ? '⏳ SUBMITTED — UNDER REVIEW'
+                    :             '❌ NOT PAID';
+
+    return [
+      '*📍 NOORUL-ULOOM TRUST — GULISTAN*',
+      'نور العلوم ٹرسٹ گلستان',
+      '',
+      `*📜 FEE RECEIPT — ${monthName.toUpperCase()}*`,
+      '────────────────────────',
+      `*Status:*  ${paidLine}`,
+      `*Receipt No:*  ${receiptNo}`,
+      `*Date:*  ${dateStr}`,
+      '────────────────────────',
+      `*Student:*  ${student?.name || '—'}`,
+      `*Student ID:*  ${student?.id || '—'}`,
+      `*Class:*  ${student?.class || 'General'}`,
+      `*Fee Month:*  ${monthName}`,
+      `*Amount:*  ₹${displayAmount.toLocaleString()}`,
+      `*Payment Mode:*  ${methodLabel}`,
+      txnId ? `*Transaction ID / UTR:*  ${txnId}` : null,
+      '────────────────────────',
+      `*Verification Code:*  ${securityCode}`,
+      '',
+      isPending
+        ? '⚠️ *Please note:* Your payment has been received and is currently under review by Maulana. You will be notified once it is confirmed.'
+        : isPaid
+          ? '✅ This receipt is officially verified by Noorul-Uloom Trust.'
+          : '',
+      '',
+      '_Noorul-Uloom Trust · Gulistan_',
+      '_جزاک اللہ خیرا_',
+    ].filter(l => l !== null).join('\n');
   };
 
   const handleShareWhatsApp = () => {
-    const text = getWhatsAppMessage();
+    const text    = getWhatsAppMessage();
     const encoded = encodeURIComponent(text);
-    // If student has a phone number, format for direct wa.me
-    const phone = student?.phone ? student.phone.replace(/[^0-9]/g, '') : '';
-    const url = phone && phone.length >= 10
-      ? `https://api.whatsapp.com/send?phone=${phone}&text=${encoded}`
-      : `https://api.whatsapp.com/send?text=${encoded}`;
-    
+    // Always open directly to the student's registered WhatsApp number
+    const url = hasPhone
+      ? `https://wa.me/91${studentPhone}?text=${encoded}`
+      : `https://wa.me/?text=${encoded}`;
     window.open(url, '_blank');
   };
 
@@ -389,11 +413,11 @@ _Official receipt from Noorul-Uloom Trust · Gulistan_`
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '6px' }}>
                 <span style={{ fontSize: 12, color: 'var(--n500)' }}>Mode / طریقہ:</span>
-                <span style={{ fontSize: 12, fontWeight: 600 }}>{method}</span>
+                <span style={{ fontSize: 12, fontWeight: 600 }}>{methodLabel}</span>
               </div>
-              {txnId && txnId !== 'N/A' && (
+              {txnId && (
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <span style={{ fontSize: 12, color: 'var(--n500)' }}>Payment Code / UTR:</span>
+                  <span style={{ fontSize: 12, color: 'var(--n500)' }}>Transaction ID / UTR:</span>
                   <span style={{ fontSize: 12, fontWeight: 700, fontFamily: 'monospace' }}>{txnId}</span>
                 </div>
               )}
@@ -405,9 +429,9 @@ _Official receipt from Noorul-Uloom Trust · Gulistan_`
               padding: '12px 14px', display: 'flex', justifyContent: 'space-between', alignItems: 'center'
             }}>
               <div>
-                <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.75)', fontWeight: 600 }}>Amount Paid / ادا شدہ رقم</span>
+                <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.75)', fontWeight: 600 }}>Amount / رقم</span>
                 <p style={{ fontSize: 20, fontWeight: 800, color: 'white', margin: '2px 0 0', letterSpacing: -0.3 }}>
-                  ₹{Number(record?.amount || amount).toLocaleString()}
+                  ₹{displayAmount.toLocaleString()}
                 </p>
               </div>
               <span className="urdu" style={{ fontSize: 17, color: 'rgba(255,255,255,0.95)', textAlign: 'right', lineHeight: 1.6 }}>
@@ -435,21 +459,26 @@ _Official receipt from Noorul-Uloom Trust · Gulistan_`
         <div style={{
           padding: '0 20px 20px', display: 'flex', flexDirection: 'column', gap: 10
         }}>
-          {/* WhatsApp button */}
+          {/* WhatsApp button — sends directly to student's registered phone */}
           <button
             onClick={handleShareWhatsApp}
             style={{
               width: '100%', padding: '14px 18px', borderRadius: 'var(--r-sm)', border: 'none',
               background: '#25D366', color: 'white', fontWeight: 700, fontSize: 15,
               cursor: 'pointer', fontFamily: 'inherit', display: 'flex', alignItems: 'center',
-              justifyContent: 'center', gap: 9, boxShadow: '0 4px 14px rgba(37, 211, 102, 0.3)'
+              justifyContent: 'center', gap: 9, boxShadow: '0 4px 14px rgba(37, 211, 102, 0.3)',
+              flexDirection: 'column'
             }}
           >
-            <Share2 size={18} strokeWidth={2.2}/>
-            <span>Send on WhatsApp</span>
-            <span className="urdu" style={{ fontSize: 15, color: 'rgba(255,255,255,0.95)', marginRight: -3, lineHeight: 1.5 }}>
-              واٹس ایپ پر بھیجیں
-            </span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 9 }}>
+              <Share2 size={18} strokeWidth={2.2}/>
+              <span>Send Receipt on WhatsApp</span>
+            </div>
+            {hasPhone && (
+              <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.8)', fontWeight: 500, marginTop: -2 }}>
+                → +91 {studentPhone.slice(0,5)} {studentPhone.slice(5)}
+              </span>
+            )}
           </button>
 
           {/* Download & Print row */}
